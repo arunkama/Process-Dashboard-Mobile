@@ -18,7 +18,7 @@ using ProcessDashboard.SyncLogic;
 #endregion
 namespace ProcessDashboard.Droid
 {
-    [Activity(Label = "ProcessDashboard.Droid", MainLauncher = true, Icon = "@drawable/icon",
+    [Activity(Label = "Process Dashboard Companion", MainLauncher = true, Icon = "@drawable/icon",
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : AppCompatActivity, IListOfProjectsInterface, IListOfTaksInterface, ITimeLogsInterface,
         ITimeLogEditInterface
@@ -112,7 +112,7 @@ namespace ProcessDashboard.Droid
 
             // Init toolbar
             _toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            _toolbar.Title = this.Resources.GetString(Resource.String.app_name);
+            _toolbar.Title = Resources.GetString(Resource.String.app_name);
             SetSupportActionBar(_toolbar);
             //_toolbar.
 
@@ -142,48 +142,57 @@ namespace ProcessDashboard.Droid
             _taskTimeLogDetailFragment = new TaskTimeLogList();
             _listOfTasksFragment = new ListProjectTasks("");
             _testFragment = new TestFragment();
-       try
-            {
+       try{
                 if (AccountStorage.UserId != null)
                 {
+                    System.Diagnostics.Debug.WriteLine("User id is not null");
                     SetDrawerState(true);
                     _currentFragment = _homeFragment;
+
+                    //for testing
+                    //_currentFragment = _testFragment;
+                    // if logged in
+                    System.Diagnostics.Debug.WriteLine("Moving Forward");
+                    // else 
+                    //CurrentFragment = ListOfProjectFragment;
+
+                    var fragmentTx = FragmentManager.BeginTransaction();
+                    // The fragment will have the ID of Resource.Id.fragment_container.
+                    fragmentTx.Replace(Resource.Id.fragmentContainer, _currentFragment);
+                    // Commit the transaction.
+                    fragmentTx.Commit();
+
+                    var apiService = new ApiTypes();
+                    var service = new PDashServices(apiService);
+                    Ctrl = new Controller(service);
+
+                    // ...
+                    CheckForCrashes();
+                    //  checkForUpdates();
+
+                    // FragmentManager.AddOnBackStackChangedListener(this);
+                    // shouldDisplayHomeUp();
+
+
                 }
                 else
                 {
-                    SetDrawerState(false);
-                    _currentFragment = _loginFragment;
+                    //SetDrawerState(false);
+                    //_currentFragment = _loginFragment;
+                    System.Diagnostics.Debug.WriteLine("Goto Login");
+                    StartActivity(typeof(LoginActivity));
+                    Finish();
+
+
                 }
             }
             catch (Exception e)
             {
-                SetDrawerState(false);
-                _currentFragment = _loginFragment;
+                System.Diagnostics.Debug.WriteLine("We had an exception");
+                StartActivity(typeof(LoginActivity));
+                Finish();
             }
-            //for testing
-           //_currentFragment = _testFragment;
-            // if logged in
-
-            // else 
-            //CurrentFragment = ListOfProjectFragment;
-
-            var fragmentTx = FragmentManager.BeginTransaction();
-            // The fragment will have the ID of Resource.Id.fragment_container.
-            fragmentTx.Replace(Resource.Id.fragmentContainer, _currentFragment);
-            // Commit the transaction.
-            fragmentTx.Commit();
-
-            var apiService = new ApiTypes();
-            var service = new PDashServices(apiService);
-            Ctrl = new Controller(service);
-
-            // ...
-            CheckForCrashes();
-            //  checkForUpdates();
-
-            // FragmentManager.AddOnBackStackChangedListener(this);
-            // shouldDisplayHomeUp();
-
+         
          
         }
 
@@ -243,6 +252,14 @@ namespace ProcessDashboard.Droid
             fragmentTx.Commit();
         }
 
+        public void logoutUser()
+        {
+            AccountStorage.ClearStorage();
+            _loginFragment.token.Text = "";
+            _loginFragment.username.Text = "";
+            _loginFragment.password.Text = "";
+
+        }
         public override void OnBackPressed()
         {
             if (FragmentManager.BackStackEntryCount > 0)
@@ -453,7 +470,7 @@ namespace ProcessDashboard.Droid
             {
                 activity.binder = timerServiceBinder;
                 activity.isBound = true;
-                this.binder = (TimerService.TimerServiceBinder) service;
+                binder = (TimerService.TimerServiceBinder) service;
             }
 
         }

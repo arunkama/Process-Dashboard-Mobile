@@ -5,10 +5,10 @@ xmlns:tools="http://schemas.android.com/tools"  >
 
   <item android:id="@+id/TimeLog_Save"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_save"/>
+        android:icon="@drawable/save"/>
 
   <item android:id="@+id/TimeLog_Delete"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_delete"/>
+        android:icon="@drawable/trash"/>
   
 </menu>

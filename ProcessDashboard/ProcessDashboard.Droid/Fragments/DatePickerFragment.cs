@@ -105,11 +105,11 @@ namespace ProcessDashboard.Droid.Fragments
             {
                 if(chosenDate.Hour<StartHour)
                 {
-                    Toast.MakeText(this.Activity, "Please choose a valid time", ToastLength.Long).Show();
+                    Toast.MakeText(Activity, "Please choose a valid time", ToastLength.Long).Show();
                 }
                 else if (chosenDate.Hour == StartHour && chosenDate.Minute < StartMinute)
                 {
-                    Toast.MakeText(this.Activity, "Please choose a valid time", ToastLength.Long).Show();
+                    Toast.MakeText(Activity, "Please choose a valid time", ToastLength.Long).Show();
                 }
                 else
                     _timeSelectedHandler(hourOfDay, minute);

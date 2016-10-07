@@ -105,7 +105,7 @@ namespace ProcessDashboard.Droid.Fragments
                         {
                             try
                             {
-                                Toast.MakeText(this.Activity, "Username and password error.", ToastLength.Long).Show();
+                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
                                 System.Diagnostics.Debug.WriteLine("We are about to logout");
                                 AccountStorage.ClearStorage();
                                 System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
@@ -116,7 +116,7 @@ namespace ProcessDashboard.Droid.Fragments
                                 ((MainActivity)(Activity)).SetDrawerState(false);
                                 ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
                             }
-                            catch (System.Exception e)
+                            catch (Exception e)
                             {
                                 System.Diagnostics.Debug.WriteLine("We encountered an error :" + e.Message);
                             }
@@ -230,7 +230,7 @@ namespace ProcessDashboard.Droid.Fragments
             //ll.AddView(srl);
 
 
-            empty = new TextView(this.Activity)
+            empty = new TextView(Activity)
             {
                 Text = "No Content Found",
                 Visibility = ViewStates.Gone,

@@ -104,14 +104,14 @@ namespace ProcessDashboard
 
         private async System.Threading.Tasks.Task SetTaskId(string newTaskId)
         {
-            if (newTaskId.Equals(this._taskId))
+            if (newTaskId.Equals(_taskId))
             {
                 return;
             }
             _stopwatch.Stop();
             await SaveIfNeeded();
 
-            this._taskId = newTaskId;
+            _taskId = newTaskId;
             ReleaseTimeLogEntry(true);
         }
 

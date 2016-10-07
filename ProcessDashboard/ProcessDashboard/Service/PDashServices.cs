@@ -165,7 +165,8 @@ namespace ProcessDashboard.Service_Access_Layer
             try
             {
                 var getRecentTasksDtoTask = _apiService.GetApi(priority).GetRecentTasks(dataset, AuthHeader);
-
+                
+                Debug.WriteLine("We are about to execute the remote method");
                 var recenttask = await _globalPolicy
                     .ExecuteAsync(async () => await getRecentTasksDtoTask);
 
@@ -173,6 +174,7 @@ namespace ProcessDashboard.Service_Access_Layer
                 {
                     throw new StatusNotOkayException(recenttask.Err.Msg, recenttask.Err.Code);
                 }
+                Debug.WriteLine("Returning without any problems");
                 return recenttask.RecentTasks;
             }
             catch (Exception)

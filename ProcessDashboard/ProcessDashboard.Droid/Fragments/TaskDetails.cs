@@ -51,7 +51,7 @@ namespace ProcessDashboard.Droid.Fragments
             base.OnResume();
             ((MainActivity)Activity).SetTitle("Task Details");
             _iff = new IntentFilter("processdashboard.timelogger");
-            _onNotice = new Home.myBroadCastReceiver((MainActivity)this.Activity);
+            _onNotice = new Home.myBroadCastReceiver((MainActivity)Activity);
             LocalBroadcastManager.GetInstance(Activity).RegisterReceiver(_onNotice, _iff);
         }
 
@@ -97,13 +97,12 @@ namespace ProcessDashboard.Droid.Fragments
             var timeinfo = view.FindViewById<ListView>(Resource.Id.TaskDetails_TimeInfo);
             var taskComplete = view.FindViewById<CheckBox>(Resource.Id.TaskDetails_TaskComplete);
 
-            if (_completionDate.HasValue)
-                taskComplete.Checked = true;
-
+            taskComplete.Checked = _completionDate.HasValue && _completionDate.Value != DateTime.MinValue;
+                
             _play = view.FindViewById<Button>(Resource.Id.TaskDetails_Play);
             _pause = view.FindViewById<Button>(Resource.Id.TaskDetails_Pause);
              
-          Debug.WriteLine("We are in the begining ");
+          Debug.WriteLine("We have set the checkbox values");
             if (TimeLoggingController.GetInstance().IsTimerRunning() && TimeLoggingController.GetInstance().GetTimingTaskId().Equals(_taskId))
             {
                 ModifyPlayPauseState(true);
@@ -190,7 +189,7 @@ namespace ProcessDashboard.Droid.Fragments
                 {
                     Debug.WriteLine("Pause Clicked");
                     Activity.StopService(new Intent(Activity, typeof(TimerService)));
-                    Toast.MakeText(this.Activity, "Time Log Entry Saved", ToastLength.Short).Show();
+                    Toast.MakeText(Activity, "Time Log Entry Saved", ToastLength.Short).Show();
 
                 };
 
@@ -240,15 +239,15 @@ namespace ProcessDashboard.Droid.Fragments
                             {
                                 if (pb.IsShowing)
                                     pb.Dismiss();
-                                Toast.MakeText(this.Activity, "Username and password error.", ToastLength.Long).Show();
+                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
                                 AccountStorage.ClearStorage();
                                 Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
                                 ((MainActivity)(Activity)).SetDrawerState(false);
                                 ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
                             }
-                            catch (System.Exception e)
+                            catch (Exception e)
                             {
-                                System.Diagnostics.Debug.WriteLine("We encountered an error :" + e.Message);
+                                Debug.WriteLine("We encountered an error :" + e.Message);
                             }
                         }
                     }
@@ -407,20 +406,20 @@ namespace ProcessDashboard.Droid.Fragments
                                             {
                                                 if (pb.IsShowing)
                                                     pb.Dismiss();
-                                                Toast.MakeText(this.Activity, "Username and password error.", ToastLength.Long).Show();
-                                                System.Diagnostics.Debug.WriteLine("We are about to logout");
+                                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                                Debug.WriteLine("We are about to logout");
                                                 AccountStorage.ClearStorage();
-                                                System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
-                                                System.Diagnostics.Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                                System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
+                                                Debug.WriteLine("Main Activity is :" + Activity == null);
+                                                Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
+                                                Debug.WriteLine("Main Activity is :" + Activity == null);
                                                 Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                                System.Diagnostics.Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
+                                                Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
                                                 ((MainActivity)(Activity)).SetDrawerState(false);
                                                 ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
                                             }
-                                            catch (System.Exception e)
+                                            catch (Exception e)
                                             {
-                                                System.Diagnostics.Debug.WriteLine("We encountered an error :" + e.Message);
+                                                Debug.WriteLine("We encountered an error :" + e.Message);
                                             }
                                         }
                                     }
@@ -542,20 +541,20 @@ namespace ProcessDashboard.Droid.Fragments
                                             {
                                                 if (pb.IsShowing)
                                                     pb.Dismiss();
-                                                Toast.MakeText(this.Activity, "Username and password error.", ToastLength.Long).Show();
-                                                System.Diagnostics.Debug.WriteLine("We are about to logout");
+                                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                                Debug.WriteLine("We are about to logout");
                                                 AccountStorage.ClearStorage();
-                                                System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
-                                                System.Diagnostics.Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                                System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
+                                                Debug.WriteLine("Main Activity is :" + Activity == null);
+                                                Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
+                                                Debug.WriteLine("Main Activity is :" + Activity == null);
                                                 Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                                System.Diagnostics.Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
+                                                Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
                                                 ((MainActivity)(Activity)).SetDrawerState(false);
                                                 ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
                                             }
-                                            catch (System.Exception e)
+                                            catch (Exception e)
                                             {
-                                                System.Diagnostics.Debug.WriteLine("We encountered an error :" + e.Message);
+                                                Debug.WriteLine("We encountered an error :" + e.Message);
                                             }
                                         }
                                     }
@@ -666,7 +665,7 @@ namespace ProcessDashboard.Droid.Fragments
 
                         try
                         {
-                            ((MainActivity)(this.Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,
+                            ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,
                                 _taskId, null, convertedTime, false);
 
                             output[2].value = DateTime.Now.ToShortDateString();
@@ -692,20 +691,20 @@ namespace ProcessDashboard.Droid.Fragments
                                         {
                                             if (pb.IsShowing)
                                                 pb.Dismiss();
-                                            Toast.MakeText(this.Activity, "Username and password error.", ToastLength.Long).Show();
-                                            System.Diagnostics.Debug.WriteLine("We are about to logout");
+                                            Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                            Debug.WriteLine("We are about to logout");
                                             AccountStorage.ClearStorage();
-                                            System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            System.Diagnostics.Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                            System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
+                                            Debug.WriteLine("Main Activity is :" + Activity == null);
+                                            Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
+                                            Debug.WriteLine("Main Activity is :" + Activity == null);
                                             Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                            System.Diagnostics.Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
+                                            Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
                                             ((MainActivity)(Activity)).SetDrawerState(false);
                                             ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
                                         }
-                                        catch (System.Exception e)
+                                        catch (Exception e)
                                         {
-                                            System.Diagnostics.Debug.WriteLine("We encountered an error :" + e.Message);
+                                            Debug.WriteLine("We encountered an error :" + e.Message);
                                         }
                                     }
                                 }
@@ -745,7 +744,7 @@ namespace ProcessDashboard.Droid.Fragments
                         try
                         {
 
-                            ((MainActivity)(this.Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,
+                            ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,
                                 _taskId, null, null, true);
 
                             output[2].value = "-";
@@ -773,20 +772,20 @@ namespace ProcessDashboard.Droid.Fragments
                                         {
                                             if (pb.IsShowing)
                                                 pb.Dismiss();
-                                            Toast.MakeText(this.Activity, "Username and password error.", ToastLength.Long).Show();
-                                            System.Diagnostics.Debug.WriteLine("We are about to logout");
+                                            Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                            Debug.WriteLine("We are about to logout");
                                             AccountStorage.ClearStorage();
-                                            System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            System.Diagnostics.Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                            System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
+                                            Debug.WriteLine("Main Activity is :" + Activity == null);
+                                            Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
+                                            Debug.WriteLine("Main Activity is :" + Activity == null);
                                             Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                            System.Diagnostics.Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
+                                            Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
                                             ((MainActivity)(Activity)).SetDrawerState(false);
                                             ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
                                         }
-                                        catch (System.Exception e)
+                                        catch (Exception e)
                                         {
-                                            System.Diagnostics.Debug.WriteLine("We encountered an error :" + e.Message);
+                                            Debug.WriteLine("We encountered an error :" + e.Message);
                                         }
                                     }
                                 }

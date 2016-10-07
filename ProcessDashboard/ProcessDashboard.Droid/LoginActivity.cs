@@ -1,72 +1,75 @@
-#region
 using System;
-using System.IO;
-using System.Net;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Android.Accounts;
+
 using Android.App;
 using Android.OS;
 using Android.Views;
-using Android.Views.InputMethods;
 using Android.Widget;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using Android.Views.InputMethods;
 using Plugin.Connectivity;
 using Debug = System.Diagnostics.Debug;
-#endregion
-namespace ProcessDashboard.Droid.Fragments
+namespace ProcessDashboard.Droid
 {
-    public class Login : Fragment
+    [Activity(Label = "Login")]
+    public class LoginActivity : Activity
     {
+
+
         private string baseurl;
         private string dataset;
 
         public TextView token, username, password;
-        public override void OnCreate(Bundle savedInstanceState)
+
+
+        protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            RetainInstance = true;
-            // Create your fragment here
-        }
 
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            // Use this to return your custom view for this Fragment
-            var lf = inflater.Inflate(Resource.Layout.Login, container, false);
+            // Create your application here 
+
+            SetContentView(Resource.Layout.Login);
+            Title = "Process Dashboard";
+
+         // Use this to return your custom view for this Fragment
+            var lf = this;
             var login = lf.FindViewById<Button>(Resource.Id.login_login);
-
             token = lf.FindViewById<TextView>(Resource.Id.login_token);
             username = lf.FindViewById<TextView>(Resource.Id.login_username);
             password = lf.FindViewById<TextView>(Resource.Id.login_password);
-
-
-            //TODO: Remove b4 production
-            /*
-            AccountStorage.ClearStorage();
+            try
+            {
+                Android.Support.V7.Widget.Toolbar tb = lf.FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.login_toolbar);
+                tb.Title = "Process Dashboard Companion";
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Message : "+e.Message);
+            }
 
             token.Text = "GO.YN-HK1";
             username.Text = "test";
             password.Text = "test";
-            */
 
+            /*
             token.Text = "";
             username.Text = "";
             password.Text = "";
-            
-            ProgressDialog pd;
-
+            */
             login.Click += (sender, args) =>
             {
                 if (token.Text.Equals("") || username.Text.Equals("") || password.Text.Equals(""))
                 {
-                    Toast.MakeText(Activity, "Please check the values you have entered", ToastLength.Short).Show();
+                    Toast.MakeText(this, "Please check the values you have entered", ToastLength.Short).Show();
                 }
                 else
                 {
                     Debug.WriteLine("We are checking network connection");
                     if (!CrossConnectivity.Current.IsConnected)
                     {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.SetTitle("Unable to connect")
                             .SetMessage("Please check your internet connection and try again")
                             .SetNeutralButton("Okay", (sender2, args2) => { builder.Dispose(); })
@@ -80,18 +83,18 @@ namespace ProcessDashboard.Droid.Fragments
                     }
                 }
             };
-            return lf;
+           
         }
 
-        public async Task<int> CheckCredentials(string datatoken, string userid, string password)
+        public async Task<int> CheckCredentials(string datatoken, string userid, string password2)
         {
             //Check username and password
             Debug.WriteLine("We are inside the outer task");
-            ProgressDialog pd = new ProgressDialog(Activity);
+            ProgressDialog pd = new ProgressDialog(this);
             pd.SetMessage("Checking username and password");
             pd.SetCancelable(false);
             pd.Show();
-            AlertDialog.Builder builder = new AlertDialog.Builder((Activity));
+            AlertDialog.Builder builder = new AlertDialog.Builder((this));
             await Task.Run(() =>
             {
                 Debug.WriteLine("We are checking username");
@@ -99,12 +102,12 @@ namespace ProcessDashboard.Droid.Fragments
                 try
                 {
                     DataSetLocationResolver dslr = new DataSetLocationResolver();
-                    dslr.ResolveFromToken(datatoken, out baseurl,out dataset);
+                    dslr.ResolveFromToken(datatoken, out baseurl, out dataset);
 
-                    Debug.WriteLine("Base url :"+baseurl);
+                    Debug.WriteLine("Base url :" + baseurl);
 
-                    AccountStorage.SetContext(Activity);
-                    AccountStorage.Set(userid, password, baseurl, dataset);
+                    AccountStorage.SetContext(this);
+                    AccountStorage.Set(userid, password2, baseurl, dataset);
 
 
                     var req =
@@ -112,12 +115,12 @@ namespace ProcessDashboard.Droid.Fragments
                                               AccountStorage.DataSet + "/");
                     req.Method = "GET";
                     req.AllowAutoRedirect = false;
-                    string credential = userid + ":" + password;
+                    string credential = userid + ":" + password2;
                     req.Headers.Add("Authorization",
                         "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(credential)));
                     // req.Get
 
-                    resp = (HttpWebResponse) req.GetResponse();
+                    resp = (HttpWebResponse)req.GetResponse();
 
                     if (resp.StatusCode == HttpStatusCode.OK)
                     {
@@ -128,12 +131,12 @@ namespace ProcessDashboard.Droid.Fragments
 
                             string responseStr = reader.ReadToEnd();
                             Debug.WriteLine(responseStr);
-                            
+
                             if (responseStr.Contains("auth-required"))
                             {
                                 Debug.WriteLine("Wrong credentials 2");
                                 AccountStorage.ClearStorage();
-                                Activity.RunOnUiThread(() =>
+                                RunOnUiThread(() =>
                                 {
                                     if (pd.IsShowing)
                                         pd.Dismiss();
@@ -153,7 +156,7 @@ namespace ProcessDashboard.Droid.Fragments
                             {
                                 Debug.WriteLine("permission issue");
                                 AccountStorage.ClearStorage();
-                                Activity.RunOnUiThread(() =>
+                                RunOnUiThread(() =>
                                 {
                                     if (pd.IsShowing)
                                         pd.Dismiss();
@@ -172,7 +175,7 @@ namespace ProcessDashboard.Droid.Fragments
                             else if (responseStr.Contains("dataset"))
                             {
                                 Debug.WriteLine("Username and password was correct");
-                                Activity.RunOnUiThread(() =>
+                                RunOnUiThread(() =>
                                 {
 
                                     pd.SetMessage("Getting Account Info");
@@ -185,7 +188,7 @@ namespace ProcessDashboard.Droid.Fragments
                                 {
                                     //LOAD METHOD TO GET ACCOUNT INFO
 
-                                 
+
                                     Debug.WriteLine("We are going to store the values");
 
                                     Debug.WriteLine("We have stored the values");
@@ -197,21 +200,21 @@ namespace ProcessDashboard.Droid.Fragments
                                     // Switch to next screen
 
                                     //HIDE PROGRESS DIALOG
-                                    Activity.RunOnUiThread(() =>
+                                    RunOnUiThread(() =>
                                     {
 
                                         if (pd.IsShowing)
                                             pd.Dismiss();
-                                        InputMethodManager imm = (InputMethodManager)Activity.GetSystemService(Android.Content.Context.InputMethodService);
+                                        InputMethodManager imm = (InputMethodManager)GetSystemService(InputMethodService);
 
                                         if (imm.IsAcceptingText)
-                                            imm.HideSoftInputFromWindow(Activity.CurrentFocus.WindowToken, 0);
+                                            imm.HideSoftInputFromWindow(CurrentFocus.WindowToken, 0);
 
-                                        Toast.MakeText(Activity, "Logged in", ToastLength.Short).Show();
-                                        ((MainActivity) Activity).FragmentManager.PopBackStack();
-                                        ((MainActivity) Activity).SetDrawerState(true);
-                                        ((MainActivity) Activity).SwitchToFragment(
-                                            MainActivity.FragmentTypes.Home);
+                                        Toast.MakeText(this, "Logged in", ToastLength.Short).Show();
+                                       
+                                        StartActivity(typeof(MainActivity));
+                                        Finish();
+
                                     });
                                 });
                             }
@@ -221,7 +224,7 @@ namespace ProcessDashboard.Droid.Fragments
                 catch (WebException e)
                 {
                     Debug.WriteLine("We have a problem");
-                    Activity.RunOnUiThread(() =>
+                    RunOnUiThread(() =>
                     {
 
                         if (pd.IsShowing)
@@ -232,14 +235,14 @@ namespace ProcessDashboard.Droid.Fragments
                     });
                     using (WebResponse response = e.Response)
                     {
-                        HttpWebResponse httpResponse = (HttpWebResponse) response;
+                        HttpWebResponse httpResponse = (HttpWebResponse)response;
                         Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
 
                         if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
                         {
                             Debug.WriteLine("Wrong credentials");
                             AccountStorage.ClearStorage();
-                            Activity.RunOnUiThread(() =>
+                            RunOnUiThread(() =>
                             {
                                 try
                                 {
@@ -249,11 +252,11 @@ namespace ProcessDashboard.Droid.Fragments
                                             "Please check your username and password and data token and try again.")
                                         .SetNeutralButton("Okay", (sender2, args2) => { builder.Dispose(); })
                                         .SetCancelable(false);
-                             
+
                                     AlertDialog alert = builder.Create();
-                             
+
                                     alert.Show();
-                             
+
                                 }
                                 catch (Exception e2)
                                 {
@@ -268,15 +271,15 @@ namespace ProcessDashboard.Droid.Fragments
                     }
                 }
 
-              
+
                 catch (Exception e)
                 {
                     // Catching any generic exception
                     Debug.WriteLine("We have hit a generic exception :" + e.Message);
                     AccountStorage.ClearStorage();
-                    Activity.RunOnUiThread(() =>
+                    RunOnUiThread(() =>
                     {
-                        AlertDialog.Builder builder2 = new AlertDialog.Builder(Activity);
+                        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
                         builder2.SetTitle("Error occured")
                             .SetMessage(e.Message +
                                         ". Please report this error to the developers. We are sorry for the inconvenience.")
@@ -295,5 +298,10 @@ namespace ProcessDashboard.Droid.Fragments
             Debug.WriteLine("We are done with the outer task");
             return 0;
         }
+
+
+
+
+
     }
 }

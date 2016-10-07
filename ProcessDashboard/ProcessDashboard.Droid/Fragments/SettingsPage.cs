@@ -15,7 +15,7 @@ namespace ProcessDashboard.Droid.Fragments
             RetainInstance = true;
             ((MainActivity)Activity).SetTitle("Settings");
             
-            AccountStorage.SetContext(this.Activity);
+            AccountStorage.SetContext(Activity);
             // Create your fragment here
             AddPreferencesFromResource(Resource.Layout.Settings);
 
@@ -26,15 +26,10 @@ namespace ProcessDashboard.Droid.Fragments
             {
                 try
                 {
-                    System.Diagnostics.Debug.WriteLine("We are about to logout");
-                    AccountStorage.ClearStorage(); 
-                    System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
-                    System.Diagnostics.Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                    System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
-                    Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                    System.Diagnostics.Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
-                    ((MainActivity) (Activity)).SetDrawerState(false);
-                    ((MainActivity) (Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
+                    AccountStorage.ClearStorage();
+                    Activity.StartActivity(typeof(LoginActivity));
+                    Activity.Finish();
+
                 }
                 catch (System.Exception e)
                 {

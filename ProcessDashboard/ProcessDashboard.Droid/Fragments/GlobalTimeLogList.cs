@@ -53,10 +53,10 @@ namespace ProcessDashboard.Droid.Fragments
 
             try
             {
-                ProgressDialog pd = new ProgressDialog(this.Activity);
+                ProgressDialog pd = new ProgressDialog(Activity);
                 pd.SetMessage("Loading");
                 pd.Show();
-
+                _headings = new Dictionary<string, List<TimeLogEntry>>();
                 var timelogEntries = await ctrl.GetTimeLogs(AccountStorage.DataSet, 0, null, null, null, null);
 
                 //  Debug.WriteLine("Got the values : " + timelogEntries.Count);
@@ -133,15 +133,15 @@ namespace ProcessDashboard.Droid.Fragments
                         {
                             try
                             {
-                                Toast.MakeText(this.Activity,"Username and password error.",ToastLength.Long).Show();
+                                Toast.MakeText(Activity,"Username and password error.",ToastLength.Long).Show();
                                 AccountStorage.ClearStorage();
                                 Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
                                 ((MainActivity)(Activity)).SetDrawerState(false);
                                 ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
                             }
-                            catch (System.Exception e)
+                            catch (Exception e)
                             {
-                                System.Diagnostics.Debug.WriteLine("We encountered an error :" + e.Message);
+                                Debug.WriteLine("We encountered an error :" + e.Message);
                             }
                         }
                     }

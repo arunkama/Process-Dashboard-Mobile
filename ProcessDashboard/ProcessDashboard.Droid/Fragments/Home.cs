@@ -20,16 +20,17 @@ using Debug = System.Diagnostics.Debug;
 #endregion
 namespace ProcessDashboard.Droid.Fragments
 {
-    public class Home : ListFragment
+    public class Home : ListFragment,ExpandableListView.IOnGroupCollapseListener,ExpandableListView.IOnChildClickListener
     {
         private MainActivity _mActivity;
         private myBroadCastReceiver onNotice;
         private IntentFilter iff;
 
         private Dictionary<string, List<Task>> _headings = new Dictionary<string, List<Task>>();
-
+       
+        private ExpandableListView expandableList;
         private Button play, pause;
-
+        
         private string _currenttaskid;
 
 
@@ -63,7 +64,7 @@ namespace ProcessDashboard.Droid.Fragments
             RetainInstance = true;
             _mActivity.SetTitle("Process Dashboard");
 
-            AccountStorage.SetContext(this.Activity);
+            AccountStorage.SetContext(Activity);
         }
 
         public override void OnPause()
@@ -77,10 +78,11 @@ namespace ProcessDashboard.Droid.Fragments
             base.OnResume();
             iff = new IntentFilter("processdashboard.timelogger");
 
-            onNotice = new myBroadCastReceiver((MainActivity)this.Activity);
+            onNotice = new myBroadCastReceiver((MainActivity)Activity);
             LocalBroadcastManager.GetInstance(Activity).RegisterReceiver(onNotice, iff);
             _mActivity.SetTitle("Process Dashboard");
         }
+
 
         public override void OnListItemClick(ListView l, View v, int position, long id)
         {
@@ -93,14 +95,8 @@ namespace ProcessDashboard.Droid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
-
             var v = inflater.Inflate(Resource.Layout.Home, container, false);
             LoadData(v, _mActivity.Ctrl);
-            
-
-            System.Diagnostics.Debug.WriteLine(AccountStorage.UserId);
-
-            Debug.WriteLine("*******************************");
             return v;
         }
 
@@ -111,7 +107,7 @@ namespace ProcessDashboard.Droid.Fragments
             var taskComplete = v.FindViewById<CheckBox>(Resource.Id.Home_TaskComplete);
             var recentTask = v.FindViewById<Button>(Resource.Id.Home_RecentTask);
             var recentProject = v.FindViewById<Button>(Resource.Id.Home_CurrentProject);
-            var expandableList = v.FindViewById<ExpandableListView>(Android.Resource.Id.List);
+            expandableList = v.FindViewById<ExpandableListView>(Android.Resource.Id.List);
 
 
             var pb = new ProgressDialog(_mActivity) { Indeterminate = true };
@@ -157,7 +153,7 @@ namespace ProcessDashboard.Droid.Fragments
             {
                 Debug.WriteLine("Pause Clicked");
                 Activity.StopService(new Intent(Activity, typeof(TimerService)));
-                Toast.MakeText(this.Activity, "Time Log Entry Saved", ToastLength.Short).Show();
+                Toast.MakeText(Activity, "Time Log Entry Saved", ToastLength.Short).Show();
 
             };
 
@@ -185,7 +181,7 @@ namespace ProcessDashboard.Droid.Fragments
                       Debug.WriteLine("We could not reach the server");
                       taskComplete.Checked = false;
                       text = "Please check your internet connection and try again.";
-                      Toast.MakeText(this.Activity, text, ToastLength.Short).Show();
+                      Toast.MakeText(Activity, text, ToastLength.Short).Show();
 
                   }
                   catch (StatusNotOkayException)
@@ -194,7 +190,7 @@ namespace ProcessDashboard.Droid.Fragments
                       taskComplete.Checked = false;
                         //TODO: Should we report this ?
                         text = "An error has occured. Please try again.";
-                      Toast.MakeText(this.Activity, text, ToastLength.Short).Show();
+                      Toast.MakeText(Activity, text, ToastLength.Short).Show();
 
                   }
                   catch (Exception e)
@@ -206,7 +202,7 @@ namespace ProcessDashboard.Droid.Fragments
                         // Sending to HockeyApp
                         ExceptionHandler.SaveException(Java.Lang.Throwable.FromException(e), null, null);
                       text = "Unable to make the change. Please try again.";
-                      Toast.MakeText(this.Activity, text, ToastLength.Short).Show();
+                      Toast.MakeText(Activity, text, ToastLength.Short).Show();
                   }
 
 
@@ -231,7 +227,7 @@ namespace ProcessDashboard.Droid.Fragments
                       Debug.WriteLine("We could not reach the server");
                       taskComplete.Checked = true;
                       text = "Please check your internet connection and try again.";
-                      Toast.MakeText(this.Activity, text, ToastLength.Short).Show();
+                      Toast.MakeText(Activity, text, ToastLength.Short).Show();
 
 
                   }
@@ -241,7 +237,7 @@ namespace ProcessDashboard.Droid.Fragments
                       pb.Dismiss();
                       taskComplete.Checked = true;
                       text = "An error has occured. Please try again.";
-                      Toast.MakeText(this.Activity, text, ToastLength.Short).Show();
+                      Toast.MakeText(Activity, text, ToastLength.Short).Show();
 
 
                   }
@@ -251,7 +247,7 @@ namespace ProcessDashboard.Droid.Fragments
                         taskComplete.Checked = true;
                       ExceptionHandler.SaveException(Java.Lang.Throwable.FromException(e), null, null);
                       text = "Unable to make the change. Please try again.";
-                      Toast.MakeText(this.Activity, text, ToastLength.Short).Show();
+                      Toast.MakeText(Activity, text, ToastLength.Short).Show();
 
                   }
 
@@ -270,8 +266,9 @@ namespace ProcessDashboard.Droid.Fragments
 
             try
             {
+                Debug.WriteLine("We are about to get the remote data");
                 var output = await ctrl.GetRecentTasks(AccountStorage.DataSet);
-
+                Debug.WriteLine("Proceeding");
                 pb.Dismiss();
 
                 var recent = output[0];
@@ -279,7 +276,7 @@ namespace ProcessDashboard.Droid.Fragments
                 recentTask.Text = recent.FullName;
                 recentProject.Text = recent.Project.Name;
                 _currenttaskid = recent.Id;
-
+                _headings = new Dictionary<string, List<Task>>();
                 _headings.Add(recent.Project.Name,new List<Task>());
 
                 output.RemoveAt(0);
@@ -302,9 +299,16 @@ namespace ProcessDashboard.Droid.Fragments
                 }
 
                 //var listAdapter = new TaskAdapter(_mActivity, Android.Resource.Layout.SimpleListItem1, output.ToArray());
-                var listAdapter = new HomeListAdapter(this.Activity, _headings);
+                var listAdapter = new HomeListAdapter(Activity, _headings);
                 expandableList.SetAdapter(listAdapter);
                 //ListAdapter = listAdapter;
+                int count = listAdapter.GroupCount;
+                expandableList.SetOnGroupCollapseListener(this);
+                expandableList.SetOnChildClickListener(this);
+                for (int i = 0; i < count; i++)
+                {
+                    expandableList.ExpandGroup(i);
+                }
 
                 var refresher = v.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
 
@@ -319,7 +323,6 @@ namespace ProcessDashboard.Droid.Fragments
                         recentTask.Text = recent.FullName;
                         recentProject.Text = recent.Project.Name;
                         _headings.Add(recent.Project.Name, new List<Task>());
-
                         output.RemoveAt(0);
                         foreach (Task t in output)
                         {
@@ -337,9 +340,15 @@ namespace ProcessDashboard.Droid.Fragments
                             }
 
                         }
-                        listAdapter = new HomeListAdapter(this.Activity, _headings);
+                        listAdapter = new HomeListAdapter(Activity, _headings);
                         expandableList.SetAdapter(listAdapter);
-
+                        count = listAdapter.GroupCount;
+                        expandableList.SetOnGroupCollapseListener(this);
+                        expandableList.SetOnChildClickListener(this);
+                        for (int i = 0; i < count; i++)
+                        {
+                            expandableList.ExpandGroup(i);
+                        }
                         refresher.Refreshing = false;
                     }
                     catch (CannotReachServerException)
@@ -451,20 +460,20 @@ namespace ProcessDashboard.Droid.Fragments
                         {
                             try
                             {
-                                Toast.MakeText(this.Activity, "Username and password error.", ToastLength.Long).Show();
-                                System.Diagnostics.Debug.WriteLine("We are about to logout");
+                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                Debug.WriteLine("We are about to logout");
                                 AccountStorage.ClearStorage();
-                                System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
-                                System.Diagnostics.Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                System.Diagnostics.Debug.WriteLine("Main Activity is :" + Activity == null);
+                                Debug.WriteLine("Main Activity is :" + Activity == null);
+                                Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
+                                Debug.WriteLine("Main Activity is :" + Activity == null);
                                 Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                System.Diagnostics.Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
+                                Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
                                 ((MainActivity)(Activity)).SetDrawerState(false);
                                 ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
                             }
-                            catch (System.Exception e)
+                            catch (Exception e)
                             {
-                                System.Diagnostics.Debug.WriteLine("We encountered an error :" + e.Message);
+                                Debug.WriteLine("We encountered an error :" + e.Message);
                             }
                         }
                     }
@@ -646,5 +655,19 @@ namespace ProcessDashboard.Droid.Fragments
             public T Obj { get; set; }
         }
 
+        public void OnGroupCollapse(int groupPosition)
+        {
+            // throw new NotImplementedException();
+            expandableList.ExpandGroup(groupPosition);
+
+        }
+        public bool OnChildClick(ExpandableListView parent, View clickedView, int groupPosition, int childPosition, long id)
+        {
+            var itmGroup = (String)parent.ExpandableListAdapter.GetGroup(groupPosition);
+            var itmChild = _headings[itmGroup][childPosition];
+            _mActivity.PassTaskDetailsInfo(itmChild.Id, null, null, null, null, null);
+            return true;
+
+        }
     }
 }
