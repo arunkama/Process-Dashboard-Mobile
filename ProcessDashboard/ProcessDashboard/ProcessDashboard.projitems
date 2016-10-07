@@ -9,7 +9,6 @@
     <Import_RootNamespace>ProcessDashboard</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AccountStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIRoot\EditATimeLogRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIRoot\DeleteRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIRoot\Err.cs" />
@@ -20,7 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)APIRoot\TimeLogRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIRoot\TimeLogsRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controller.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ControllerTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DatasetLocationResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DBWrapper\DBRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DBWrapper\ProjectWrapper.cs" />
@@ -47,9 +45,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Service\PDashServices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SettingsData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stopwatch.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TimeLoggingController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StateChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AccountStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SettingsData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeLoggingController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Readme.md" />

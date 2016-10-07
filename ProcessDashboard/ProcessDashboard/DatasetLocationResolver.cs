@@ -142,11 +142,11 @@ namespace ProcessDashboard
 
         private Uri LookupUrl(string shortUrl)
         {
-            var req = WebRequest.CreateHttp(shortUrl);
-            req.Method = "HEAD";
-            req.AllowAutoRedirect = false;
-            var resp = (HttpWebResponse)req.GetResponse();
-            return new Uri(resp.Headers["Location"]);
+			var req = WebRequest.CreateHttp(shortUrl);
+			req.Method = "HEAD";
+			req.AllowAutoRedirect = false;
+			var resp = (HttpWebResponse)req.GetResponse();
+			return new Uri(resp.Headers["Location"]);
         }
     }
 }

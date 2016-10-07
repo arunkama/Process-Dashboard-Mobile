@@ -84,7 +84,6 @@ namespace ProcessDashboard.Service_Access_Layer
             try
             {
                 var projectsDtoTask = _apiService.GetApi(priority).GetProjectsList(dataset, AuthHeader);
-
                 var projects = await _globalPolicy
                     .ExecuteAsync(async () => await projectsDtoTask);
 
@@ -108,6 +107,7 @@ namespace ProcessDashboard.Service_Access_Layer
             {
                 var getTasksDtoTask = _apiService.GetApi(priority)
                     .GetTasksList(dataset, projectId, AuthHeader);
+
                 var tasks = await _globalPolicy
                     .ExecuteAsync(async () => await getTasksDtoTask);
 
@@ -165,8 +165,6 @@ namespace ProcessDashboard.Service_Access_Layer
             try
             {
                 var getRecentTasksDtoTask = _apiService.GetApi(priority).GetRecentTasks(dataset, AuthHeader);
-                
-                Debug.WriteLine("We are about to execute the remote method");
                 var recenttask = await _globalPolicy
                     .ExecuteAsync(async () => await getRecentTasksDtoTask);
 
@@ -174,7 +172,6 @@ namespace ProcessDashboard.Service_Access_Layer
                 {
                     throw new StatusNotOkayException(recenttask.Err.Msg, recenttask.Err.Code);
                 }
-                Debug.WriteLine("Returning without any problems");
                 return recenttask.RecentTasks;
             }
             catch (Exception)
@@ -254,8 +251,7 @@ namespace ProcessDashboard.Service_Access_Layer
                     value.Add("completionDate", _util.GetServerTimeString(completionDate));
 
                 var updateTaskDtoTask = _apiService.GetApi(priority)
-                    .UpdateTaskDetails(AuthHeader, dataset, projecttaskId, _util.GetEditTimeStamp(),
-                        value);
+                    .UpdateTaskDetails(AuthHeader, dataset, projecttaskId, _util.GetEditTimeStamp(), value);
 
                 var task = await _globalPolicy
                     .ExecuteAsync(async () => await updateTaskDtoTask);
@@ -296,8 +292,10 @@ namespace ProcessDashboard.Service_Access_Layer
                     {"open", open ? "true" : "false"},
                     {"interruptTime", interruptTime}
                 };
+
                 var addTimeLog = _apiService.GetApi(priority).AddTimeLog(AuthHeader, dataset, value);
                 Debug.WriteLine("2");
+
                 var timelogged = await addTimeLog;
                 Debug.WriteLine("3");
                 if (timelogged.Stat.Equals("fail") && timelogged.Err.Code.Equals("stopTimeLogging"))
@@ -411,12 +409,12 @@ namespace ProcessDashboard.Service_Access_Layer
             {
                 if (!IsWifiConnected())
                 {
-                    throw new CannotReachServerException();
+					throw new CannotReachServerException("App running in WiFi only mode, but WiFi is unavailable.");
                 }
             }
             if (!CrossConnectivity.Current.IsConnected)
             {
-                throw new CannotReachServerException();
+                throw new CannotReachServerException("Server connection unavailable.");
             }
         }
     }

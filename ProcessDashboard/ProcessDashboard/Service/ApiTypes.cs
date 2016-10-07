@@ -35,13 +35,12 @@ namespace ProcessDashboard.Service
         // Any network request that is because the user initiated it. This has the highest priority
         private readonly Lazy<IPDashApi> _userInitiated;
         //TODO: Change this to the APIBaseAddress stored in settings file.
-        public string ApiBaseAddress;
+		public string ApiBaseAddress = AccountStorage.BaseUrl;
 
         public ApiTypes(string apiBaseAddress = null)
         {
             Func<HttpMessageHandler, IPDashApi> createClient = messageHandler =>
             {
-                ApiBaseAddress = AccountStorage.BaseUrl;
                 var client = new HttpClient(messageHandler)
                 {
                     BaseAddress = new Uri(apiBaseAddress ?? ApiBaseAddress)

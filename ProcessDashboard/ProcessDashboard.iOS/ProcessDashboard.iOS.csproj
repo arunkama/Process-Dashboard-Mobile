@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
@@ -22,7 +21,8 @@
     <MtouchArch>i386</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <MtouchProfiling>true</MtouchProfiling>
+    <MtouchProfiling>false</MtouchProfiling>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -33,7 +33,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: David Tuma (6P7M2C445W)</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>full</DebugType>
@@ -56,8 +56,8 @@
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <MtouchProfiling>true</MtouchProfiling>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchProfiling>false</MtouchProfiling>
+    <CodesignKey>iPhone Developer: David Tuma (6P7M2C445W)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
   </PropertyGroup>
   <ItemGroup>
@@ -81,6 +81,53 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\..\packages\Rx-Interfaces.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\..\packages\Rx-Core.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\..\packages\Rx-Linq.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\..\packages\Rx-PlatformServices.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Punchclock">
+      <HintPath>..\..\packages\Punchclock.1.2.0\lib\Portable-net45+win+wpa81+wp80\Punchclock.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat">
+      <HintPath>..\..\packages\Splat.1.3.1\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
+    </Reference>
+    <Reference Include="Fusillade">
+      <HintPath>..\..\packages\fusillade.0.6.0\lib\Portable-net45+win+wpa81+wp80\Fusillade.dll</HintPath>
+    </Reference>
+    <Reference Include="Refit">
+      <HintPath>..\..\packages\refit.2.4.1\lib\Xamarin.iOS10\Refit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\..\packages\modernhttpclient.2.4.2\lib\Xamarin.iOS10\ModernHttpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Polly">
+      <HintPath>..\..\packages\Polly.4.3.0\lib\portable-net45+netcore45+wpa81+wp8\Polly.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Auth">
+      <HintPath>..\..\packages\Xamarin.Auth.1.3.0\lib\Xamarin.iOS10\Xamarin.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Json" />
+    <Reference Include="Plugin.Settings">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.2.1.0\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Settings.Abstractions">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.2.1.0\lib\Xamarin.iOS10\Plugin.Settings.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Connectivity">
+      <HintPath>..\..\packages\Xam.Plugin.Connectivity.2.2.12\lib\Xamarin.iOS10\Plugin.Connectivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Connectivity.Abstractions">
+      <HintPath>..\..\packages\Xam.Plugin.Connectivity.2.2.12\lib\Xamarin.iOS10\Plugin.Connectivity.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json">
@@ -92,71 +139,161 @@
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%403x.png">
       <InProject>false</InProject>
     </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-76.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-76%402x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%402x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small%403x.png">
       <InProject>false</InProject>
     </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small-40.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small-40%402x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-Small-40%403x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default%402x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-568h%402x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-Portrait.png">
-      <InProject>false</InProject>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-Portrait%402x.png">
-      <InProject>false</InProject>
-    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\play-activated.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\play-deactivated.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\pause-activated.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\pause-deactivated.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\play-activated.imageset\play-activated.png" />
+    <ImageAsset Include="Resources\Images.xcassets\play-deactivated.imageset\play-deactivated.png" />
+    <ImageAsset Include="Resources\Images.xcassets\checkbox-checked.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\checkbox-empty.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\play-deactivated.imageset\play-activated copy.png" />
+    <ImageAsset Include="Resources\Images.xcassets\pause-activated.imageset\stop.png" />
+    <ImageAsset Include="Resources\Images.xcassets\checkbox-checked.imageset\checkbox-checked.png" />
+    <ImageAsset Include="Resources\Images.xcassets\checkbox-unchecked.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\checkbox-unchecked.imageset\checkbox-unchecked.png" />
+    <ImageAsset Include="Resources\Images.xcassets\pause-activated.imageset\pause-activated.png" />
+    <ImageAsset Include="Resources\Images.xcassets\pause-deactivated.imageset\pause-deactivated.png" />
+    <ImageAsset Include="Resources\Images.xcassets\play-activated.imageset\play-deactivated copy.png" />
+    <ImageAsset Include="Resources\Images.xcassets\home_tab_icon.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\home_tab_icon.imageset\tab_home.png" />
+    <ImageAsset Include="Resources\Images.xcassets\list_tab_icon.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\list_tab_icon.imageset\tab-list.png" />
+    <ImageAsset Include="Resources\Images.xcassets\log_tab_icon.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\log_tab_icon.imageset\tab-timelogs2.png" />
+    <ImageAsset Include="Resources\Images.xcassets\log_tab_icon_2.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\log_tab_icon_2.imageset\tab-timelogs.png" />
+    <ImageAsset Include="Resources\Images.xcassets\home_tab_icon.imageset\tab_home-3x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\home_tab_icon.imageset\tab_home-2x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\list_tab_icon.imageset\tab-list-3x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\list_tab_icon.imageset\tab-list-2x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\log_tab_icon.imageset\tab-timelogs2-3x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\log_tab_icon.imageset\tab-timelogs2-2x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\log_tab_icon_2.imageset\tab-timelogs-3x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\log_tab_icon_2.imageset\tab-timelogs-2x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\checkbox-empty.imageset\checkbox-empty.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\29.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\58.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\87.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\80.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\120.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\57.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\114.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\180.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\40.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\50.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\100.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\72.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\144.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\76.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\152.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\167.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LauchIcon.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\LauchIcon.imageset\Clock-2.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="Resources\ITunesArtwork" />
     <ITunesArtwork Include="Resources\ITunesArtwork%402x" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-    <InterfaceDefinition Include="Main.storyboard" />
+    <InterfaceDefinition Include="ViewControllers\Main.storyboard" />
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
+    <Compile Include="SQLite.cs" />
+    <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="ViewControllers\TimeLogs\GlobalTimeLogs\TimeLogPageViewController.cs" />
+    <Compile Include="ViewControllers\TimeLogs\GlobalTimeLogs\TimeLogPageViewController.designer.cs">
+      <DependentUpon>TimeLogPageViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\TimeLogs\GlobalTimeLogs\TimelogTableSource.cs" />
+    <Compile Include="ViewControllers\TimeLogs\TimeLogDetails\CustomTimeLogCell.cs" />
+    <Compile Include="ViewControllers\TimeLogs\TimeLogDetails\TimelogDetailViewController.cs" />
+    <Compile Include="ViewControllers\TimeLogs\TimeLogDetails\TimelogDetailViewController.designer.cs">
+      <DependentUpon>TimelogDetailViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\TimeLogs\TaskTimeLogs\TaskTimeLogTableSource.cs" />
+    <Compile Include="ViewControllers\TimeLogs\TaskTimeLogs\TaskTimeLogViewController.cs" />
+    <Compile Include="ViewControllers\TimeLogs\TaskTimeLogs\TaskTimeLogViewController.designer.cs">
+      <DependentUpon>TaskTimeLogViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\CommonElements\StatusPickerViewModel.cs" />
+    <Compile Include="ViewControllers\ProjectsList\ProjectsTableSource.cs" />
+    <Compile Include="ViewControllers\ProjectsList\ProjectsTableViewController.cs" />
+    <Compile Include="ViewControllers\ProjectsList\ProjectsTableViewController.designer.cs">
+      <DependentUpon>ProjectsTableViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\CommonElements\SharpMobileCode.ModalPicker\CustomPickerModel.cs" />
+    <Compile Include="ViewControllers\CommonElements\SharpMobileCode.ModalPicker\ModalPickerAnimatedDismissed.cs" />
+    <Compile Include="ViewControllers\CommonElements\SharpMobileCode.ModalPicker\ModalPickerAnimatedTransitioning.cs" />
+    <Compile Include="ViewControllers\CommonElements\SharpMobileCode.ModalPicker\ModalPickerTransitionDelegate.cs" />
+    <Compile Include="ViewControllers\CommonElements\SharpMobileCode.ModalPicker\ModalPickerViewController.cs" />
+    <None Include="ViewControllers\CommonElements\SharpMobileCode.ModalPicker\SharpMobileCode.ModalPicker.csproj" />
+    <Compile Include="ViewControllers\CommonElements\SharpMobileCode.ModalPicker\Properties\AssemblyInfo.cs" />
+    <Compile Include="PDashAPI.cs" />
+    <Compile Include="ViewControllers\ViewControllerHelper.cs" />
+    <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="ViewControllers\Settings\SettingsViewController.cs" />
+    <Compile Include="ViewControllers\Settings\SettingsViewController.designer.cs">
+      <DependentUpon>SettingsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\Settings\SettingTableSource.cs" />
+    <Compile Include="ViewControllers\Login\LoginPageViewController.cs" />
+    <Compile Include="ViewControllers\Login\LoginPageViewController.designer.cs">
+      <DependentUpon>LoginPageViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="ViewController.cs" />
-    <Compile Include="ViewController.designer.cs">
-      <DependentUpon>ViewController.cs</DependentUpon>
+    <Compile Include="ViewControllers\TaskDetails\TaskDetailsViewController.cs" />
+    <Compile Include="ViewControllers\TaskDetails\TaskDetailsViewController.designer.cs">
+      <DependentUpon>TaskDetailsViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewControllers\TaskDetails\TaskDetailTableSource.cs" />
+    <Compile Include="ViewControllers\TasksList\TasksTableSource.cs" />
+    <Compile Include="ViewControllers\TasksList\TasksTableViewController.cs" />
+    <Compile Include="ViewControllers\TasksList\TasksTableViewController.designer.cs">
+      <DependentUpon>TasksTableViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllers\Home\TaskTableSource.cs" />
+    <Compile Include="ViewControllers\Home\HomePageViewController.cs" />
+    <Compile Include="ViewControllers\Home\HomePageViewController.designer.cs">
+      <DependentUpon>HomePageViewController.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Images.xcassets\play-activated.imageset\" />
+    <Folder Include="Resources\Images.xcassets\play-deactivated.imageset\" />
+    <Folder Include="Resources\Images.xcassets\pause-activated.imageset\" />
+    <Folder Include="Resources\Images.xcassets\pause-deactivated.imageset\" />
+    <Folder Include="Resources\Images.xcassets\checkbox-checked.imageset\" />
+    <Folder Include="Resources\Images.xcassets\checkbox-empty.imageset\" />
+    <Folder Include="Resources\Images.xcassets\checkbox-unchecked.imageset\" />
+    <Folder Include="Resources\Images.xcassets\home_tab_icon.imageset\" />
+    <Folder Include="Resources\Images.xcassets\list_tab_icon.imageset\" />
+    <Folder Include="Resources\Images.xcassets\log_tab_icon.imageset\" />
+    <Folder Include="Resources\Images.xcassets\log_tab_icon_2.imageset\" />
+    <Folder Include="ViewControllers\" />
+    <Folder Include="ViewControllers\TaskDetails\" />
+    <Folder Include="ViewControllers\TasksList\" />
+    <Folder Include="ViewControllers\Home\" />
+    <Folder Include="ViewControllers\TimeLogs\" />
+    <Folder Include="ViewControllers\TimeLogs\TimeLogDetails\" />
+    <Folder Include="ViewControllers\TimeLogs\TaskTimeLogs\" />
+    <Folder Include="ViewControllers\CommonElements\" />
+    <Folder Include="Resources\Images.xcassets\LauchIcon.imageset\" />
+    <Folder Include="ViewControllers\Settings\" />
+    <Folder Include="ViewControllers\Login\" />
   </ItemGroup>
   <Import Project="..\ProcessDashboard\ProcessDashboard.projitems" Label="Shared" Condition="Exists('..\ProcessDashboard\ProcessDashboard.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="..\..\packages\refit.2.4.1\build\portable-net45+netcore45+wp8+wpa81+monoandroid+xamarin.ios10\refit.targets" Condition="Exists('..\..\packages\refit.2.4.1\build\portable-net45+netcore45+wp8+wpa81+monoandroid+xamarin.ios10\refit.targets')" />
 </Project>
