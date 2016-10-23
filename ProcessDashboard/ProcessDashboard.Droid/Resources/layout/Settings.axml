@@ -14,19 +14,27 @@
       />
   
     <EditTextPreference
-      android:key="runawaytimer_preference"
-      android:title="Runaway Timer"
-      android:summary="Runaway timer value"
+      android:key="interrupt_preference"
+      android:title="Interrupt Timer"
+      android:summary="Interrupt timer value"
       android:inputType="number"
+       android:persistent="true"
+    android:dialogTitle="Set Interrupt Timer"
+    android:dialogMessage="Interrupt Time : "
+    android:defaultValue="0"
 
       />
     />
   
   <EditTextPreference
-      android:key="interrupt_preference"
+      android:key="runawaytimer_preference"
       android:title="Runaway Timer"
       android:summary="Runaway timer value"
       android:inputType="number"
+  android:persistent="true"
+    android:dialogTitle="Set Run Timer"
+    android:dialogMessage="Runner Time : "
+    android:defaultValue="0"
 
     />
   

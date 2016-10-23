@@ -657,172 +657,304 @@ namespace ProcessDashboard.Droid.Fragments
                 taskComplete.CheckedChange += (sender, args) =>
                 {
                     string text;
+                   
                     if (args.IsChecked)
                     {
                         // Mark a task as complete
-                        DateTime convertedTime = Util.GetInstance().GetServerTime(DateTime.UtcNow);
-                        taskDetail.CompletionDate = convertedTime;
+                        // Show current date and time
+                        // Mark Complete Right button
 
-                        try
-                        {
-                            ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,
-                                _taskId, null, convertedTime, false);
 
-                            output[2].value = DateTime.Now.ToShortDateString();
+                        DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime time)
+                        {
 
-                        }
-                        catch (CannotReachServerException)
-                        {
-                            output[2].value = "-";
-                            taskComplete.Checked = false;
-                            Toast.MakeText(Activity, "Please check your internet connection and try again.", ToastLength.Long).Show();
-                        }
-                        catch (WebException we)
-                        {
-                            if (we.Status == WebExceptionStatus.ProtocolError)
+                            Debug.WriteLine("The received date is :" + time.ToShortDateString());
+                            output[2].value = time.ToShortDateString();
+
+                            listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem,output);
+                            Debug.WriteLine("We have changed content ");
+                            timeinfo.Adapter = listAdapter;
+
+                            try
                             {
-                                var response = we.Response as HttpWebResponse;
-                                if (response != null)
+                                ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,_taskId, null, Util.GetInstance().GetServerTime(time), false);
+                            }
+                            catch (CannotReachServerException)
+                            {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("Unable to Connect")
+                                    .SetMessage("Please check your network connection and try again")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                          ((MainActivity)Activity).FragmentManager.PopBackStack();
+                                      })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
+
+
+                            }
+                            catch (WebException we)
+                            {
+                                if (we.Status == WebExceptionStatus.ProtocolError)
                                 {
-                                    Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                                    if (response.StatusCode == HttpStatusCode.Forbidden)
+                                    var response = we.Response as HttpWebResponse;
+                                    if (response != null)
                                     {
-                                        try
+                                        Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
+                                        if (response.StatusCode == HttpStatusCode.Forbidden)
                                         {
-                                            if (pb.IsShowing)
-                                                pb.Dismiss();
-                                            Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                            Debug.WriteLine("We are about to logout");
-                                            AccountStorage.ClearStorage();
-                                            Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                            Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                            Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
-                                            ((MainActivity)(Activity)).SetDrawerState(false);
-                                            ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
+                                            try
+                                            {
+                                                if (pb.IsShowing)
+                                                    pb.Dismiss();
+                                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                                Debug.WriteLine("We are about to logout");
+                                                AccountStorage.ClearStorage();
+                                                Debug.WriteLine("Main Activity is :" + Activity == null);
+                                                Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
+                                                Debug.WriteLine("Main Activity is :" + Activity == null);
+                                                Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
+                                                Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
+                                                ((MainActivity)(Activity)).SetDrawerState(false);
+                                                ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Debug.WriteLine("We encountered an error :" + e.Message);
+                                            }
                                         }
-                                        catch (Exception e)
-                                        {
-                                            Debug.WriteLine("We encountered an error :" + e.Message);
-                                        }
+                                    }
+                                    else
+                                    {
+                                        // no http status code available
+                                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                                     }
                                 }
                                 else
                                 {
-                                    // no http status code available
-                                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                    // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                                 }
                             }
-                            else
+                            catch (StatusNotOkayException se)
                             {
-                                // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                    .SetMessage("Error :" + se.GetMessage())
+                                    .SetNeutralButton("Okay", (sender2, args2) =>
+                                    {
+                                        builder.Dispose();
+                                    })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
                             }
-                        }
-                        catch (StatusNotOkayException)
+                            catch (Exception e)
+                            {
+                                // For any other weird exceptions
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                      })
+                                    .SetMessage("Error :" + e.Message)
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+                            }
+
+
+                            Toast.MakeText(_mActivity, "Task Marked Complete", ToastLength.Short).Show();
+                        });
+                        //frag.StartTime = DateTime.SpecifyKind(DateTime.Parse(""+output[2].value), DateTimeKind.Local);
+
+                        if (taskDetail.CompletionDate.HasValue)
                         {
-                            output[2].value = "-";
-                            taskComplete.Checked = false;
-                            Toast.MakeText(Activity, "An error occured. Please try again.", ToastLength.Short).Show();
+
+                            frag.StartTime = Util.GetInstance().GetLocalTime(taskDetail.CompletionDate.Value);
+                            frag.positiveText = "Mark Complete";
                         }
-                        catch (Exception)
+                        else
                         {
-                            // For any other weird exceptions
-                            taskComplete.Checked = false;
-                            output[2].value = "-";
-                            Toast.MakeText(Activity, "Unable to make the change. Please try again.", ToastLength.Short).Show();
+                            frag.StartTime = DateTime.Now;
+                            frag.positiveText = "Mark Complete";
                         }
 
-                        text = "Task Marked Complete";
+                        Debug.WriteLine(frag.StartTime);
+                        frag.Show(FragmentManager, DatePickerFragment.TAG);
+
+                        //-------------------------- ---------------------
+                        //((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,_taskId, null, convertedTime, false);
+                        //  output[2].value = DateTime.Now.ToShortDateString();
+                        
+                        text = "";
                     }
                     else
                     {
-                        var previousValue = output[2].value;
-                        // Unmark the task 
-                        taskDetail.CompletionDate = null;
 
-                        try
+                        // Task is already complete. Default option is to mark the task incomplete
+                        // If user begins to change the completion date, provide option to change completion date
+
+
+
+                        DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime time)
                         {
 
-                            ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,
-                                _taskId, null, null, true);
+                            Debug.WriteLine("The received date is :" + time.ToShortDateString());
+                            output[2].value = time.ToShortDateString();
 
-                            output[2].value = "-";
+                            listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem, output);
+                            Debug.WriteLine("We have changed content ");
+                            timeinfo.Adapter = listAdapter;
 
-
-
-                        }
-                        catch (CannotReachServerException)
-                        {
-                            taskComplete.Checked = true;
-                            output[2].value = previousValue;
-                            Toast.MakeText(Activity, "Please check your internet connection and try again.", ToastLength.Long).Show();
-                        }
-                        catch (WebException we)
-                        {
-                            if (we.Status == WebExceptionStatus.ProtocolError)
+                            try
                             {
-                                var response = we.Response as HttpWebResponse;
-                                if (response != null)
+                                ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet, _taskId, null, Util.GetInstance().GetServerTime(time), false);
+                                var previousValue = output[2].value;
+                                // Unmark the task 
+                                taskDetail.CompletionDate = null;
+
+                            }
+                            catch (CannotReachServerException)
+                            {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("Unable to Connect")
+                                    .SetMessage("Please check your network connection and try again")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                          ((MainActivity)Activity).FragmentManager.PopBackStack();
+                                      })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
+
+
+                            }
+                            catch (WebException we)
+                            {
+                                if (we.Status == WebExceptionStatus.ProtocolError)
                                 {
-                                    Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                                    if (response.StatusCode == HttpStatusCode.Forbidden)
+                                    var response = we.Response as HttpWebResponse;
+                                    if (response != null)
                                     {
-                                        try
+                                        Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
+                                        if (response.StatusCode == HttpStatusCode.Forbidden)
                                         {
-                                            if (pb.IsShowing)
-                                                pb.Dismiss();
-                                            Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                            Debug.WriteLine("We are about to logout");
-                                            AccountStorage.ClearStorage();
-                                            Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                            Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                            Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
-                                            ((MainActivity)(Activity)).SetDrawerState(false);
-                                            ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
+                                            try
+                                            {
+                                                if (pb.IsShowing)
+                                                    pb.Dismiss();
+                                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                                Debug.WriteLine("We are about to logout");
+                                                AccountStorage.ClearStorage();
+                                                Debug.WriteLine("Main Activity is :" + Activity == null);
+                                                Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
+                                                Debug.WriteLine("Main Activity is :" + Activity == null);
+                                                Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
+                                                Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
+                                                ((MainActivity)(Activity)).SetDrawerState(false);
+                                                ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Debug.WriteLine("We encountered an error :" + e.Message);
+                                            }
                                         }
-                                        catch (Exception e)
-                                        {
-                                            Debug.WriteLine("We encountered an error :" + e.Message);
-                                        }
+                                    }
+                                    else
+                                    {
+                                        // no http status code available
+                                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                                     }
                                 }
                                 else
                                 {
-                                    // no http status code available
-                                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                    // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                                 }
                             }
-                            else
+                            catch (StatusNotOkayException se)
                             {
-                                // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                    .SetMessage("Error :" + se.GetMessage())
+                                    .SetNeutralButton("Okay", (sender2, args2) =>
+                                    {
+                                        builder.Dispose();
+                                    })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
                             }
-                        }
-                        catch (StatusNotOkayException)
+                            catch (Exception e)
+                            {
+                                // For any other weird exceptions
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                      })
+                                    .SetMessage("Error :" + e.Message)
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+                            }
+
+
+                            Toast.MakeText(_mActivity, "Task Marked Complete", ToastLength.Short).Show();
+                        });
+                        //frag.StartTime = DateTime.SpecifyKind(DateTime.Parse(""+output[2].value), DateTimeKind.Local);
+
+                        if (taskDetail.CompletionDate.HasValue)
                         {
-                            taskComplete.Checked = true;
-                            output[2].value = previousValue;
-                            Toast.MakeText(Activity, "An error has occured. Please try again.", ToastLength.Short).Show();
+
+                            frag.StartTime = Util.GetInstance().GetLocalTime(taskDetail.CompletionDate.Value);
+                            frag.positiveText = "Mark Complete";
                         }
-                        catch (Exception)
+                        else
                         {
-                            // For any other weird exceptions
-                            taskComplete.Checked = true;
-                            output[2].value = previousValue;
-                            Toast.MakeText(Activity, "Unable to make the change. Please try again.", ToastLength.Short).Show();
+                            frag.StartTime = DateTime.Now;
+                            frag.positiveText = "Mark Complete";
                         }
 
-                        text = "Task Marked Incomplete";
+                        Debug.WriteLine(frag.StartTime);
+                        frag.Show(FragmentManager, DatePickerFragment.TAG);
+
+
+                    
+
+
                     }
+                   
                     listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem,output);
                     Debug.WriteLine("We have changed content ");
                     timeinfo.Adapter = listAdapter;
-                    Toast.MakeText(Activity, text, ToastLength.Short).Show();
                     // await (((MainActivity)(Activity)).Ctrl).UpdateTimeLog(Settings.GetInstance().Dataset,)
                 };
             }
+
+
             if (pb.IsShowing)
                 pb.Dismiss();
 

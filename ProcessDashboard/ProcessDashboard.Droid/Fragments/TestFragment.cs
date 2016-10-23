@@ -30,7 +30,7 @@ namespace ProcessDashboard.Droid.Fragments
 
             try
             {
-                var ct = new ControllerTest(((MainActivity)Activity).Ctrl);
+               // var ct = new ControllerTest(((MainActivity)Activity).Ctrl);
 
                 //ct.TestListOfProjects();
                 //ct.TestRecentTasks();

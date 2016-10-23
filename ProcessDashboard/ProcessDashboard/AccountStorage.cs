@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Auth;
 
@@ -17,7 +18,7 @@ namespace ProcessDashboard
 		private const String AppName = "Process_Dashboard";
 
 		#if __ANDROID__
-	    private Context _context;
+	    private static Context _context;
 
 	    public static void SetContext(Context context)
 	    {
@@ -62,7 +63,7 @@ namespace ProcessDashboard
 				List<Account> accounts = (List<Account>)AccountStore.Create().FindAccountsForService(AppName);
 				#endif
 
-				if (accounts.Count > 0)
+				if (accounts.Count() > 0)
 				{
 					#if __ANDROID__
                     AccountStore.Create(_context).Delete(accounts.First(), AppName);
@@ -127,24 +128,27 @@ namespace ProcessDashboard
 
 		public static void ClearPassword()
 		{
-			List<Account> accounts = (List<Account>)AccountStore.Create().FindAccountsForService(AppName);
+
+            #if __IOS__
+            List<Account> accounts = (List<Account>)AccountStore.Create().FindAccountsForService(AppName);
 			if (accounts.Count > 0)
 			{
 				accounts[0].Properties["Password"] = "";
 			}
+            #endif
 		}
 
 		public static string BaseUrl
 		{
 			get
 			{
-				#if __IOS__
+#if __IOS__
 				List<Account> accounts = (List<Account>)AccountStore.Create().FindAccountsForService(AppName);
 				return (accounts.Count > 0) ? accounts[0].Properties["BaseUrl"] : null;
-				#else
+#else
 				Account account = (Account)AccountStore.Create(_context).FindAccountsForService(AppName).ElementAtOrDefault(0);
 				return account?.Properties["BaseUrl"];
-				#endif
+#endif
 			}
 		}
 
@@ -152,13 +156,13 @@ namespace ProcessDashboard
 		{
 			get
 			{
-				#if __IOS__
+#if __IOS__
 				List<Account> accounts = (List<Account>)AccountStore.Create().FindAccountsForService(AppName);
 				return (accounts.Count > 0) ? accounts[0].Properties["DataSet"] : null;
-				#else
+#else
 				Account account = (Account)AccountStore.Create(_context).FindAccountsForService(AppName).ElementAtOrDefault(0);
 				return account?.Properties["DataSet"];
-				#endif
+#endif
 			}
 		}
 
@@ -166,7 +170,7 @@ namespace ProcessDashboard
 		{
 			get
 			{
-				#if __IOS__
+#if __IOS__
 				List<Account> accounts = (List<Account>)AccountStore.Create().FindAccountsForService(AppName);
 				if (accounts.Count > 0 && accounts[0].Properties.ContainsKey("DataToken"))
 				{
@@ -174,10 +178,10 @@ namespace ProcessDashboard
 				}
 				return null;
 
-				#else
+#else
 				Account account = (Account)AccountStore.Create(_context).FindAccountsForService(AppName).ElementAtOrDefault(0);
 				return account?.Properties["DataSet"];
-				#endif
+#endif
 			}
 		}
 

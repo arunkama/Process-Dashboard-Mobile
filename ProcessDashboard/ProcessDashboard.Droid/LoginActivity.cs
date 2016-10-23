@@ -1,14 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 using Android.App;
 using Android.OS;
-using Android.Views;
 using Android.Widget;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Android.Content;
 using Android.Views.InputMethods;
+using HockeyApp.Android.Metrics;
 using Plugin.Connectivity;
 using Debug = System.Diagnostics.Debug;
 namespace ProcessDashboard.Droid
@@ -20,6 +22,7 @@ namespace ProcessDashboard.Droid
 
         private string baseurl;
         private string dataset;
+        private string APP_ID = "168ed05dd48a4d32b8bbcc25fec3d3a9";
 
         public TextView token, username, password;
 
@@ -33,12 +36,19 @@ namespace ProcessDashboard.Droid
             SetContentView(Resource.Layout.Login);
             Title = "Process Dashboard";
 
-         // Use this to return your custom view for this Fragment
+            MetricsManager.Register(this, Application,APP_ID);
+            MetricsManager.EnableUserMetrics();
+            
+            
+            // Use this to return your custom view for this Fragment
             var lf = this;
             var login = lf.FindViewById<Button>(Resource.Id.login_login);
             token = lf.FindViewById<TextView>(Resource.Id.login_token);
             username = lf.FindViewById<TextView>(Resource.Id.login_username);
             password = lf.FindViewById<TextView>(Resource.Id.login_password);
+            var help = lf.FindViewById<Button>(Resource.Id.login_help);
+
+
             try
             {
                 Android.Support.V7.Widget.Toolbar tb = lf.FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.login_toolbar);
@@ -49,20 +59,16 @@ namespace ProcessDashboard.Droid
                 Debug.WriteLine("Message : "+e.Message);
             }
 
+           // token.Text = "G-VZV-QUI";
             token.Text = "GO.YN-HK1";
             username.Text = "test";
             password.Text = "test";
 
-            /*
-            token.Text = "";
-            username.Text = "";
-            password.Text = "";
-            */
             login.Click += (sender, args) =>
             {
                 if (token.Text.Equals("") || username.Text.Equals("") || password.Text.Equals(""))
                 {
-                    Toast.MakeText(this, "Please check the values you have entered", ToastLength.Short).Show();
+                    Toast.MakeText(this, "Values cannot be empty. Please enter all the values.", ToastLength.Short).Show();
                 }
                 else
                 {
@@ -83,7 +89,11 @@ namespace ProcessDashboard.Droid
                     }
                 }
             };
-           
+
+            help.Click += (sender, args) =>
+            {
+               StartActivity(typeof(HelpActivity));
+            };
         }
 
         public async Task<int> CheckCredentials(string datatoken, string userid, string password2)
@@ -91,7 +101,7 @@ namespace ProcessDashboard.Droid
             //Check username and password
             Debug.WriteLine("We are inside the outer task");
             ProgressDialog pd = new ProgressDialog(this);
-            pd.SetMessage("Checking username and password");
+            pd.SetMessage("Checking credentials");
             pd.SetCancelable(false);
             pd.Show();
             AlertDialog.Builder builder = new AlertDialog.Builder((this));
@@ -105,23 +115,23 @@ namespace ProcessDashboard.Droid
                     dslr.ResolveFromToken(datatoken, out baseurl, out dataset);
 
                     Debug.WriteLine("Base url :" + baseurl);
+                    Debug.WriteLine("Dataset :" + baseurl);
 
                     AccountStorage.SetContext(this);
-                    AccountStorage.Set(userid, password2, baseurl, dataset);
+                    AccountStorage.Set(userid, password2, baseurl, dataset,datatoken);
 
 
-                    var req =
-                        WebRequest.CreateHttp(AccountStorage.BaseUrl + "api/v1/datasets/" +
+                    var req = WebRequest.CreateHttp(AccountStorage.BaseUrl + "api/v1/datasets/" +
                                               AccountStorage.DataSet + "/");
                     req.Method = "GET";
                     req.AllowAutoRedirect = false;
                     string credential = userid + ":" + password2;
-                    req.Headers.Add("Authorization",
+                    req.Headers.Add("Authorization", 
                         "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(credential)));
                     // req.Get
 
                     resp = (HttpWebResponse)req.GetResponse();
-
+                    Debug.WriteLine("Response code now is :"+resp.StatusCode);
                     if (resp.StatusCode == HttpStatusCode.OK)
                     {
                         if (resp.GetResponseStream().CanRead)
@@ -177,7 +187,6 @@ namespace ProcessDashboard.Droid
                                 Debug.WriteLine("Username and password was correct");
                                 RunOnUiThread(() =>
                                 {
-
                                     pd.SetMessage("Getting Account Info");
                                     pd.SetCancelable(false);
                                     if (!pd.IsShowing)
@@ -223,51 +232,118 @@ namespace ProcessDashboard.Droid
                 }
                 catch (WebException e)
                 {
-                    Debug.WriteLine("We have a problem");
+                    
+                    Console.WriteLine(e.Status);
+                    
                     RunOnUiThread(() =>
                     {
-
                         if (pd.IsShowing)
-                        {
                             pd.Dismiss();
-                        }
-
                     });
-                    using (WebResponse response = e.Response)
+
+                    if (e.Status == WebExceptionStatus.NameResolutionFailure)
                     {
-                        HttpWebResponse httpResponse = (HttpWebResponse)response;
-                        Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
+                        AccountStorage.ClearStorage();
+                        //HockeyApp.MetricsManager.TrackEvent("adsfasdf");
 
-                        if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
+                        MetricsManager.TrackEvent(e.ToString());
+                        RunOnUiThread(() =>
                         {
-                            Debug.WriteLine("Wrong credentials");
-                            AccountStorage.ClearStorage();
-                            RunOnUiThread(() =>
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                            builder2.SetTitle("Invalid credentials")
+                                .SetMessage("Please check username, password and the datatoken used and try again")
+                                .SetNeutralButton("Okay", (sender2, args2) => { builder2.Dispose(); })
+                                .SetCancelable(false);
+                            AlertDialog alert2 = builder2.Create();
+                            alert2.Show();
+                        });
+                    }
+                    else if (e.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        using (WebResponse response = e.Response)
+                        {
+                            HttpWebResponse httpResponse = (HttpWebResponse) response;
+                            Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
+                            // 404 Happens only when the Data Token is invalid
+                            if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                             {
-                                try
+                                Debug.WriteLine("Wrong Data Token");
+                                AccountStorage.ClearStorage();
+                                RunOnUiThread(() =>
                                 {
+                                    try
+                                    {
 
-                                    builder.SetTitle("Unauthorized")
-                                        .SetMessage(
-                                            "Please check your username and password and data token and try again.")
-                                        .SetNeutralButton("Okay", (sender2, args2) => { builder.Dispose(); })
-                                        .SetCancelable(false);
+                                        builder.SetTitle("Unauthorized")
+                                            .SetMessage(
+                                                "Invalid Datatoken. Kindly check the data token and try again.")
+                                            .SetNeutralButton("Okay", (sender2, args2) => { builder.Dispose(); })
+                                            .SetCancelable(false);
 
-                                    AlertDialog alert = builder.Create();
+                                        AlertDialog alert = builder.Create();
 
-                                    alert.Show();
+                                        alert.Show();
 
-                                }
-                                catch (Exception e2)
+                                    }
+                                    catch (Exception e2)
+                                    {
+                                        Debug.WriteLine("We have hit an error while showing the dialog :" + e2.Message);
+                                        AccountStorage.ClearStorage();
+                                    }
+                                });
+                            }
+                            // 401 happens when the username and password is invalid
+                            else if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
+                            {
+                                Debug.WriteLine("Wrong credentials");
+                                AccountStorage.ClearStorage();
+                                RunOnUiThread(() =>
                                 {
-                                    Debug.WriteLine("We have hit an error while showing the dialog :" + e2.Message);
-                                    AccountStorage.ClearStorage();
-                                }
-                            });
+                                    try
+                                    {
+
+                                        builder.SetTitle("Unauthorized")
+                                            .SetMessage(
+                                                "Please check your username and password and try again.")
+                                            .SetNeutralButton("Okay", (sender2, args2) => { builder.Dispose(); })
+                                            .SetCancelable(false);
+
+                                        AlertDialog alert = builder.Create();
+
+                                        alert.Show();
+
+                                    }
+                                    catch (Exception e2)
+                                    {
+                                        Debug.WriteLine("We have hit an error while showing the dialog :" + e2.Message);
+                                        AccountStorage.ClearStorage();
+                                    }
+                                });
 
 
 
+                            }
                         }
+                    }
+                    else
+                    {
+                        Debug.WriteLine("We have hit a generic exception :" + e.Message);
+                        AccountStorage.ClearStorage();
+                        //HockeyApp.MetricsManager.TrackEvent("adsfasdf");
+
+                        MetricsManager.TrackEvent(e.ToString());
+                        RunOnUiThread(() =>
+                        {
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                            builder2.SetTitle("Unkown error occured")
+                                .SetMessage("An unkown error has occured. The error has been reported to the developers. We are sorry for the inconvenience.")
+                                .SetNeutralButton("Okay", (sender2, args2) => { builder2.Dispose(); })
+                                .SetCancelable(false);
+                            AlertDialog alert2 = builder2.Create();
+                            alert2.Show();
+                        });
+
+
                     }
                 }
 
@@ -277,12 +353,12 @@ namespace ProcessDashboard.Droid
                     // Catching any generic exception
                     Debug.WriteLine("We have hit a generic exception :" + e.Message);
                     AccountStorage.ClearStorage();
+                    MetricsManager.TrackEvent(e.ToString());
                     RunOnUiThread(() =>
                     {
                         AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-                        builder2.SetTitle("Error occured")
-                            .SetMessage(e.Message +
-                                        ". Please report this error to the developers. We are sorry for the inconvenience.")
+                        builder2.SetTitle("Unkown error occured")
+                            .SetMessage("An unkown error has occured. The error has been reported to the developers. We are sorry for the inconvenience.")
                             .SetNeutralButton("Okay", (sender2, args2) => { builder2.Dispose(); })
                             .SetCancelable(false);
                         AlertDialog alert2 = builder2.Create();

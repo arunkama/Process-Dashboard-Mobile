@@ -556,14 +556,22 @@ namespace ProcessDashboard.Droid.Fragments
             public override void OnReceive(Context context, Intent intent)
             {
                 string value = intent.GetStringExtra("key");
-                Debug.WriteLine(value);
-                if (value.Equals("Time logging has been started by the server"))
+                if (value == null)
+                    Debug.WriteLine("Value is null");
+                else
                 {
-                    home.ModifyPlayPauseState(true);
-                }
-                else if (value.Equals("Time logging has been cancelled by the server"))
-                {
-                    home.ModifyPlayPauseState(false);
+                    Debug.WriteLine(value);
+                    if (value.Equals("Time logging has been started by the server"))
+                    {
+                        home.ModifyPlayPauseState(true);
+                    }
+                    else if (value.Equals("Time logging has been cancelled by the server"))
+                    {
+                        home.ModifyPlayPauseState(false);
+                    } else if (value.Equals("Time logging has been stopped"))
+                    {
+                        home.ModifyPlayPauseState(false);
+                    }
                 }
 
 

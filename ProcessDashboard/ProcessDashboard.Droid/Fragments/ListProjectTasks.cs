@@ -33,7 +33,7 @@ namespace ProcessDashboard.Droid.Fragments
             RetainInstance = true;
             // Create your fragment here
             ((MainActivity) Activity).SetTitle("List of Tasks");
-            // Create your fragment here
+            // Create your fragment hereass
         }
 
         public override void OnResume()
@@ -70,10 +70,20 @@ namespace ProcessDashboard.Droid.Fragments
                 if (listAdapter.Count == 0)
                 {
                     empty.Visibility = ViewStates.Visible;
-                    
-                }else
-                ListView.SetSelection(listAdapter.Count - 1);
-                
+
+                }
+                else
+                {
+                    for(int i=0;i<output.Count;i++) 
+                    {
+                        if (!output[i].CompletionDate.HasValue)
+                        {
+                            ListView.SetSelection(i);
+                            break;
+                        }
+                    }
+                    //ListView.SetSelection(listAdapter.Count - 1);
+                }
                 //ListView.SmoothScrollByOffset(listAdapter.Count -1);
                // ListView.SmoothScrollToPosition(listAdapter.Count - 1);
             }

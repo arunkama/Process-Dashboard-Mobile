@@ -216,6 +216,7 @@
     <Compile Include="Fragments\GlobalTimeLogList.cs" />
     <Compile Include="Fragments\TimeLogDetail.cs" />
     <Compile Include="Fragments\Home.cs" />
+    <Compile Include="HelpActivity.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Interfaces\ListOfProjectsInterface.cs" />
     <Compile Include="Interfaces\ListOfTaksInterface.cs" />
@@ -288,6 +289,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DateTimePickerDialogFragment.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\HelpActivityLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

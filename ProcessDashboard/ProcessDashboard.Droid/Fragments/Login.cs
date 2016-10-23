@@ -104,7 +104,7 @@ namespace ProcessDashboard.Droid.Fragments
                     Debug.WriteLine("Base url :"+baseurl);
 
                     AccountStorage.SetContext(Activity);
-                    AccountStorage.Set(userid, password, baseurl, dataset);
+                    AccountStorage.Set(userid, password, baseurl, dataset, datatoken);
 
 
                     var req =

@@ -2517,176 +2517,176 @@ namespace ProcessDashboard.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f07009c
-			public const int DataHeader = 2131165340;
+			// aapt resource value: 0x7f0700a0
+			public const int DataHeader = 2131165344;
 			
-			// aapt resource value: 0x7f0700fe
-			public const int Entry_name = 2131165438;
-			
-			// aapt resource value: 0x7f0700ff
-			public const int Entry_value = 2131165439;
-			
-			// aapt resource value: 0x7f070090
-			public const int Home_CurrentProject = 2131165328;
-			
-			// aapt resource value: 0x7f070092
-			public const int Home_Pause = 2131165330;
-			
-			// aapt resource value: 0x7f070093
-			public const int Home_Play = 2131165331;
-			
-			// aapt resource value: 0x7f070091
-			public const int Home_RecentTask = 2131165329;
-			
-			// aapt resource value: 0x7f070095
-			public const int Home_RecentTaskListText = 2131165333;
-			
-			// aapt resource value: 0x7f070094
-			public const int Home_TaskComplete = 2131165332;
-			
-			// aapt resource value: 0x7f0700d2
-			public const int OptionHostName = 2131165394;
-			
-			// aapt resource value: 0x7f0700d3
-			public const int OptionPort = 2131165395;
-			
-			// aapt resource value: 0x7f0700d1
-			public const int OptionRemoteServer = 2131165393;
-			
-			// aapt resource value: 0x7f0700f2
-			public const int OptionsButton = 2131165426;
-			
-			// aapt resource value: 0x7f0700d4
-			public const int PlannedTime_Hours = 2131165396;
-			
-			// aapt resource value: 0x7f0700d5
-			public const int PlannedTime_Min = 2131165397;
-			
-			// aapt resource value: 0x7f07009e
-			public const int ProjectsLists_Refresher = 2131165342;
-			
-			// aapt resource value: 0x7f0700ed
-			public const int ResultFullName = 2131165421;
-			
-			// aapt resource value: 0x7f0700ef
-			public const int ResultMessage = 2131165423;
-			
-			// aapt resource value: 0x7f0700ee
-			public const int ResultResultState = 2131165422;
-			
-			// aapt resource value: 0x7f0700ec
-			public const int ResultRunSingleMethodTest = 2131165420;
-			
-			// aapt resource value: 0x7f0700f0
-			public const int ResultStackTrace = 2131165424;
-			
-			// aapt resource value: 0x7f0700da
-			public const int ResultsFailed = 2131165402;
-			
-			// aapt resource value: 0x7f0700d7
-			public const int ResultsId = 2131165399;
-			
-			// aapt resource value: 0x7f0700db
-			public const int ResultsIgnored = 2131165403;
-			
-			// aapt resource value: 0x7f0700dc
-			public const int ResultsInconclusive = 2131165404;
-			
-			// aapt resource value: 0x7f0700dd
-			public const int ResultsMessage = 2131165405;
-			
-			// aapt resource value: 0x7f0700d9
-			public const int ResultsPassed = 2131165401;
-			
-			// aapt resource value: 0x7f0700d8
-			public const int ResultsResult = 2131165400;
-			
-			// aapt resource value: 0x7f0700f1
-			public const int RunTestsButton = 2131165425;
-			
-			// aapt resource value: 0x7f0700e6
-			public const int TaskDetails_Notes = 2131165414;
-			
-			// aapt resource value: 0x7f0700e5
-			public const int TaskDetails_NotesText = 2131165413;
-			
-			// aapt resource value: 0x7f0700e1
-			public const int TaskDetails_Pause = 2131165409;
-			
-			// aapt resource value: 0x7f0700e2
-			public const int TaskDetails_Play = 2131165410;
-			
-			// aapt resource value: 0x7f0700e0
-			public const int TaskDetails_PlayPauseLayout = 2131165408;
-			
-			// aapt resource value: 0x7f0700de
-			public const int TaskDetails_ProjectName = 2131165406;
-			
-			// aapt resource value: 0x7f0700e3
-			public const int TaskDetails_TaskComplete = 2131165411;
-			
-			// aapt resource value: 0x7f0700df
-			public const int TaskDetails_TaskName = 2131165407;
-			
-			// aapt resource value: 0x7f0700e4
-			public const int TaskDetails_TimeInfo = 2131165412;
-			
-			// aapt resource value: 0x7f0700e7
-			public const int TaskDetails_TimeLogButton = 2131165415;
-			
-			// aapt resource value: 0x7f0700e8
-			public const int TaskTimeLog_ProjectName = 2131165416;
-			
-			// aapt resource value: 0x7f0700e9
-			public const int TaskTimeLog_TaskName = 2131165417;
-			
-			// aapt resource value: 0x7f0700ea
-			public const int TaskTimeLog_TimeLogEntriesText = 2131165418;
-			
-			// aapt resource value: 0x7f0700eb
-			public const int TaskTimeLog_fab = 2131165419;
-			
-			// aapt resource value: 0x7f0700f3
-			public const int TestSuiteListView = 2131165427;
-			
-			// aapt resource value: 0x7f0700fd
-			public const int TimeLogEdit_Comment = 2131165437;
-			
-			// aapt resource value: 0x7f0700fc
-			public const int TimeLogEdit_CommentText = 2131165436;
-			
-			// aapt resource value: 0x7f0700f9
-			public const int TimeLogEdit_DeltaTime = 2131165433;
-			
-			// aapt resource value: 0x7f0700f8
-			public const int TimeLogEdit_DeltaTimeText = 2131165432;
-			
-			// aapt resource value: 0x7f0700fb
-			public const int TimeLogEdit_InterruptTime = 2131165435;
-			
-			// aapt resource value: 0x7f0700fa
-			public const int TimeLogEdit_InterruptTimeText = 2131165434;
-			
-			// aapt resource value: 0x7f0700f4
-			public const int TimeLogEdit_ProjectName = 2131165428;
-			
-			// aapt resource value: 0x7f0700f7
-			public const int TimeLogEdit_StartTime = 2131165431;
-			
-			// aapt resource value: 0x7f0700f6
-			public const int TimeLogEdit_StartTimeText = 2131165430;
-			
-			// aapt resource value: 0x7f0700f5
-			public const int TimeLogEdit_TaskName = 2131165429;
-			
-			// aapt resource value: 0x7f070105
-			public const int TimeLog_Delete = 2131165445;
+			// aapt resource value: 0x7f070103
+			public const int Entry_name = 2131165443;
 			
 			// aapt resource value: 0x7f070104
-			public const int TimeLog_Save = 2131165444;
+			public const int Entry_value = 2131165444;
 			
-			// aapt resource value: 0x7f0700c4
-			public const int action0 = 2131165380;
+			// aapt resource value: 0x7f070094
+			public const int Home_CurrentProject = 2131165332;
+			
+			// aapt resource value: 0x7f070096
+			public const int Home_Pause = 2131165334;
+			
+			// aapt resource value: 0x7f070097
+			public const int Home_Play = 2131165335;
+			
+			// aapt resource value: 0x7f070095
+			public const int Home_RecentTask = 2131165333;
+			
+			// aapt resource value: 0x7f070099
+			public const int Home_RecentTaskListText = 2131165337;
+			
+			// aapt resource value: 0x7f070098
+			public const int Home_TaskComplete = 2131165336;
+			
+			// aapt resource value: 0x7f0700d7
+			public const int OptionHostName = 2131165399;
+			
+			// aapt resource value: 0x7f0700d8
+			public const int OptionPort = 2131165400;
+			
+			// aapt resource value: 0x7f0700d6
+			public const int OptionRemoteServer = 2131165398;
+			
+			// aapt resource value: 0x7f0700f7
+			public const int OptionsButton = 2131165431;
+			
+			// aapt resource value: 0x7f0700d9
+			public const int PlannedTime_Hours = 2131165401;
+			
+			// aapt resource value: 0x7f0700da
+			public const int PlannedTime_Min = 2131165402;
+			
+			// aapt resource value: 0x7f0700a2
+			public const int ProjectsLists_Refresher = 2131165346;
+			
+			// aapt resource value: 0x7f0700f2
+			public const int ResultFullName = 2131165426;
+			
+			// aapt resource value: 0x7f0700f4
+			public const int ResultMessage = 2131165428;
+			
+			// aapt resource value: 0x7f0700f3
+			public const int ResultResultState = 2131165427;
+			
+			// aapt resource value: 0x7f0700f1
+			public const int ResultRunSingleMethodTest = 2131165425;
+			
+			// aapt resource value: 0x7f0700f5
+			public const int ResultStackTrace = 2131165429;
+			
+			// aapt resource value: 0x7f0700df
+			public const int ResultsFailed = 2131165407;
+			
+			// aapt resource value: 0x7f0700dc
+			public const int ResultsId = 2131165404;
+			
+			// aapt resource value: 0x7f0700e0
+			public const int ResultsIgnored = 2131165408;
+			
+			// aapt resource value: 0x7f0700e1
+			public const int ResultsInconclusive = 2131165409;
+			
+			// aapt resource value: 0x7f0700e2
+			public const int ResultsMessage = 2131165410;
+			
+			// aapt resource value: 0x7f0700de
+			public const int ResultsPassed = 2131165406;
+			
+			// aapt resource value: 0x7f0700dd
+			public const int ResultsResult = 2131165405;
+			
+			// aapt resource value: 0x7f0700f6
+			public const int RunTestsButton = 2131165430;
+			
+			// aapt resource value: 0x7f0700eb
+			public const int TaskDetails_Notes = 2131165419;
+			
+			// aapt resource value: 0x7f0700ea
+			public const int TaskDetails_NotesText = 2131165418;
+			
+			// aapt resource value: 0x7f0700e6
+			public const int TaskDetails_Pause = 2131165414;
+			
+			// aapt resource value: 0x7f0700e7
+			public const int TaskDetails_Play = 2131165415;
+			
+			// aapt resource value: 0x7f0700e5
+			public const int TaskDetails_PlayPauseLayout = 2131165413;
+			
+			// aapt resource value: 0x7f0700e3
+			public const int TaskDetails_ProjectName = 2131165411;
+			
+			// aapt resource value: 0x7f0700e8
+			public const int TaskDetails_TaskComplete = 2131165416;
+			
+			// aapt resource value: 0x7f0700e4
+			public const int TaskDetails_TaskName = 2131165412;
+			
+			// aapt resource value: 0x7f0700e9
+			public const int TaskDetails_TimeInfo = 2131165417;
+			
+			// aapt resource value: 0x7f0700ec
+			public const int TaskDetails_TimeLogButton = 2131165420;
+			
+			// aapt resource value: 0x7f0700ed
+			public const int TaskTimeLog_ProjectName = 2131165421;
+			
+			// aapt resource value: 0x7f0700ee
+			public const int TaskTimeLog_TaskName = 2131165422;
+			
+			// aapt resource value: 0x7f0700ef
+			public const int TaskTimeLog_TimeLogEntriesText = 2131165423;
+			
+			// aapt resource value: 0x7f0700f0
+			public const int TaskTimeLog_fab = 2131165424;
+			
+			// aapt resource value: 0x7f0700f8
+			public const int TestSuiteListView = 2131165432;
+			
+			// aapt resource value: 0x7f070102
+			public const int TimeLogEdit_Comment = 2131165442;
+			
+			// aapt resource value: 0x7f070101
+			public const int TimeLogEdit_CommentText = 2131165441;
+			
+			// aapt resource value: 0x7f0700fe
+			public const int TimeLogEdit_DeltaTime = 2131165438;
+			
+			// aapt resource value: 0x7f0700fd
+			public const int TimeLogEdit_DeltaTimeText = 2131165437;
+			
+			// aapt resource value: 0x7f070100
+			public const int TimeLogEdit_InterruptTime = 2131165440;
+			
+			// aapt resource value: 0x7f0700ff
+			public const int TimeLogEdit_InterruptTimeText = 2131165439;
+			
+			// aapt resource value: 0x7f0700f9
+			public const int TimeLogEdit_ProjectName = 2131165433;
+			
+			// aapt resource value: 0x7f0700fc
+			public const int TimeLogEdit_StartTime = 2131165436;
+			
+			// aapt resource value: 0x7f0700fb
+			public const int TimeLogEdit_StartTimeText = 2131165435;
+			
+			// aapt resource value: 0x7f0700fa
+			public const int TimeLogEdit_TaskName = 2131165434;
+			
+			// aapt resource value: 0x7f07010a
+			public const int TimeLog_Delete = 2131165450;
+			
+			// aapt resource value: 0x7f070109
+			public const int TimeLog_Save = 2131165449;
+			
+			// aapt resource value: 0x7f0700c9
+			public const int action0 = 2131165385;
 			
 			// aapt resource value: 0x7f07005a
 			public const int action_bar = 2131165274;
@@ -2712,8 +2712,8 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f07005b
 			public const int action_context_bar = 2131165275;
 			
-			// aapt resource value: 0x7f0700c8
-			public const int action_divider = 2131165384;
+			// aapt resource value: 0x7f0700cd
+			public const int action_divider = 2131165389;
 			
 			// aapt resource value: 0x7f070003
 			public const int action_menu_divider = 2131165187;
@@ -2748,26 +2748,26 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070044
 			public const int buttonPanel = 2131165252;
 			
-			// aapt resource value: 0x7f070081
-			public const int button_add_response = 2131165313;
+			// aapt resource value: 0x7f070085
+			public const int button_add_response = 2131165317;
 			
-			// aapt resource value: 0x7f07007c
-			public const int button_attachment = 2131165308;
-			
-			// aapt resource value: 0x7f070086
-			public const int button_login = 2131165318;
-			
-			// aapt resource value: 0x7f070082
-			public const int button_refresh = 2131165314;
-			
-			// aapt resource value: 0x7f07007d
-			public const int button_send = 2131165309;
+			// aapt resource value: 0x7f070080
+			public const int button_attachment = 2131165312;
 			
 			// aapt resource value: 0x7f07008a
-			public const int button_update = 2131165322;
+			public const int button_login = 2131165322;
 			
-			// aapt resource value: 0x7f0700c5
-			public const int cancel_action = 2131165381;
+			// aapt resource value: 0x7f070086
+			public const int button_refresh = 2131165318;
+			
+			// aapt resource value: 0x7f070081
+			public const int button_send = 2131165313;
+			
+			// aapt resource value: 0x7f07008e
+			public const int button_update = 2131165326;
+			
+			// aapt resource value: 0x7f0700ca
+			public const int cancel_action = 2131165386;
 			
 			// aapt resource value: 0x7f07002b
 			public const int center = 2131165227;
@@ -2781,8 +2781,8 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070052
 			public const int checkbox = 2131165266;
 			
-			// aapt resource value: 0x7f0700cb
-			public const int chronometer = 2131165387;
+			// aapt resource value: 0x7f0700d0
+			public const int chronometer = 2131165392;
 			
 			// aapt resource value: 0x7f070033
 			public const int clip_horizontal = 2131165235;
@@ -2808,26 +2808,26 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070040
 			public const int default_activity_button = 2131165248;
 			
-			// aapt resource value: 0x7f07006a
-			public const int design_bottom_sheet = 2131165290;
+			// aapt resource value: 0x7f07006c
+			public const int design_bottom_sheet = 2131165292;
+			
+			// aapt resource value: 0x7f070073
+			public const int design_menu_item_action_area = 2131165299;
+			
+			// aapt resource value: 0x7f070072
+			public const int design_menu_item_action_area_stub = 2131165298;
 			
 			// aapt resource value: 0x7f070071
-			public const int design_menu_item_action_area = 2131165297;
+			public const int design_menu_item_text = 2131165297;
 			
 			// aapt resource value: 0x7f070070
-			public const int design_menu_item_action_area_stub = 2131165296;
-			
-			// aapt resource value: 0x7f07006f
-			public const int design_menu_item_text = 2131165295;
-			
-			// aapt resource value: 0x7f07006e
-			public const int design_navigation_view = 2131165294;
+			public const int design_navigation_view = 2131165296;
 			
 			// aapt resource value: 0x7f07000e
 			public const int disableHome = 2131165198;
 			
-			// aapt resource value: 0x7f0700a7
-			public const int drawer_layout = 2131165351;
+			// aapt resource value: 0x7f0700ac
+			public const int drawer_layout = 2131165356;
 			
 			// aapt resource value: 0x7f07005c
 			public const int edit_query = 2131165276;
@@ -2835,8 +2835,8 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f07001c
 			public const int end = 2131165212;
 			
-			// aapt resource value: 0x7f0700d0
-			public const int end_padder = 2131165392;
+			// aapt resource value: 0x7f0700d5
+			public const int end_padder = 2131165397;
 			
 			// aapt resource value: 0x7f070023
 			public const int enterAlways = 2131165219;
@@ -2865,17 +2865,23 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070038
 			public const int @fixed = 2131165240;
 			
-			// aapt resource value: 0x7f0700a9
-			public const int fragmentContainer = 2131165353;
+			// aapt resource value: 0x7f0700ae
+			public const int fragmentContainer = 2131165358;
 			
-			// aapt resource value: 0x7f07009a
-			public const int gt_delta = 2131165338;
+			// aapt resource value: 0x7f07009e
+			public const int gt_delta = 2131165342;
 			
-			// aapt resource value: 0x7f070099
-			public const int gt_startTime = 2131165337;
+			// aapt resource value: 0x7f07009d
+			public const int gt_startTime = 2131165341;
 			
-			// aapt resource value: 0x7f070098
-			public const int gt_taskName = 2131165336;
+			// aapt resource value: 0x7f07009c
+			public const int gt_taskName = 2131165340;
+			
+			// aapt resource value: 0x7f070076
+			public const int help_toolbar = 2131165302;
+			
+			// aapt resource value: 0x7f070077
+			public const int help_webview = 2131165303;
 			
 			// aapt resource value: 0x7f070005
 			public const int home = 2131165189;
@@ -2892,98 +2898,101 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f07003f
 			public const int image = 2131165247;
 			
-			// aapt resource value: 0x7f0700cf
-			public const int info = 2131165391;
+			// aapt resource value: 0x7f0700d4
+			public const int info = 2131165396;
 			
-			// aapt resource value: 0x7f070078
-			public const int input_email = 2131165304;
+			// aapt resource value: 0x7f07007c
+			public const int input_email = 2131165308;
 			
-			// aapt resource value: 0x7f07007a
-			public const int input_message = 2131165306;
+			// aapt resource value: 0x7f07007e
+			public const int input_message = 2131165310;
 			
-			// aapt resource value: 0x7f070077
-			public const int input_name = 2131165303;
+			// aapt resource value: 0x7f07007b
+			public const int input_name = 2131165307;
 			
-			// aapt resource value: 0x7f070085
-			public const int input_password = 2131165317;
+			// aapt resource value: 0x7f070089
+			public const int input_password = 2131165321;
 			
-			// aapt resource value: 0x7f070079
-			public const int input_subject = 2131165305;
+			// aapt resource value: 0x7f07007d
+			public const int input_subject = 2131165309;
 			
 			// aapt resource value: 0x7f070000
 			public const int item_touch_helper_previous_elevation = 2131165184;
 			
+			// aapt resource value: 0x7f070090
+			public const int label_author = 2131165328;
+			
+			// aapt resource value: 0x7f070091
+			public const int label_date = 2131165329;
+			
+			// aapt resource value: 0x7f070083
+			public const int label_last_updated = 2131165315;
+			
+			// aapt resource value: 0x7f070078
+			public const int label_message = 2131165304;
+			
+			// aapt resource value: 0x7f070092
+			public const int label_text = 2131165330;
+			
 			// aapt resource value: 0x7f07008c
-			public const int label_author = 2131165324;
+			public const int label_title = 2131165324;
 			
 			// aapt resource value: 0x7f07008d
-			public const int label_date = 2131165325;
+			public const int label_version = 2131165325;
 			
-			// aapt resource value: 0x7f07007f
-			public const int label_last_updated = 2131165311;
-			
-			// aapt resource value: 0x7f070074
-			public const int label_message = 2131165300;
-			
-			// aapt resource value: 0x7f07008e
-			public const int label_text = 2131165326;
-			
-			// aapt resource value: 0x7f070088
-			public const int label_title = 2131165320;
-			
-			// aapt resource value: 0x7f070089
-			public const int label_version = 2131165321;
-			
-			// aapt resource value: 0x7f07009d
-			public const int lblListItem = 2131165341;
+			// aapt resource value: 0x7f0700a1
+			public const int lblListItem = 2131165345;
 			
 			// aapt resource value: 0x7f07002f
 			public const int left = 2131165231;
 			
-			// aapt resource value: 0x7f0700c9
-			public const int line1 = 2131165385;
+			// aapt resource value: 0x7f0700ce
+			public const int line1 = 2131165390;
 			
-			// aapt resource value: 0x7f0700cd
-			public const int line3 = 2131165389;
+			// aapt resource value: 0x7f0700d2
+			public const int line3 = 2131165394;
 			
-			// aapt resource value: 0x7f070097
-			public const int linearLayout1 = 2131165335;
+			// aapt resource value: 0x7f07009b
+			public const int linearLayout1 = 2131165339;
 			
 			// aapt resource value: 0x7f07000b
 			public const int listMode = 2131165195;
 			
-			// aapt resource value: 0x7f070073
-			public const int listView1 = 2131165299;
+			// aapt resource value: 0x7f070075
+			public const int listView1 = 2131165301;
 			
-			// aapt resource value: 0x7f07008f
-			public const int list_attachments = 2131165327;
+			// aapt resource value: 0x7f070093
+			public const int list_attachments = 2131165331;
 			
-			// aapt resource value: 0x7f070083
-			public const int list_feedback_messages = 2131165315;
+			// aapt resource value: 0x7f070087
+			public const int list_feedback_messages = 2131165319;
 			
 			// aapt resource value: 0x7f070041
 			public const int list_item = 2131165249;
 			
-			// aapt resource value: 0x7f0700a1
-			public const int listprojecttasks_emptyview = 2131165345;
+			// aapt resource value: 0x7f0700a5
+			public const int listprojecttasks_emptyview = 2131165349;
+			
+			// aapt resource value: 0x7f0700ab
+			public const int login_help = 2131165355;
+			
+			// aapt resource value: 0x7f0700aa
+			public const int login_login = 2131165354;
+			
+			// aapt resource value: 0x7f0700a9
+			public const int login_password = 2131165353;
+			
+			// aapt resource value: 0x7f0700a7
+			public const int login_token = 2131165351;
 			
 			// aapt resource value: 0x7f0700a6
-			public const int login_login = 2131165350;
+			public const int login_toolbar = 2131165350;
 			
-			// aapt resource value: 0x7f0700a5
-			public const int login_password = 2131165349;
+			// aapt resource value: 0x7f0700a8
+			public const int login_username = 2131165352;
 			
-			// aapt resource value: 0x7f0700a3
-			public const int login_token = 2131165347;
-			
-			// aapt resource value: 0x7f0700a2
-			public const int login_toolbar = 2131165346;
-			
-			// aapt resource value: 0x7f0700a4
-			public const int login_username = 2131165348;
-			
-			// aapt resource value: 0x7f0700c7
-			public const int media_actions = 2131165383;
+			// aapt resource value: 0x7f0700cc
+			public const int media_actions = 2131165388;
 			
 			// aapt resource value: 0x7f07001d
 			public const int middle = 2131165213;
@@ -2991,101 +3000,104 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070037
 			public const int mini = 2131165239;
 			
-			// aapt resource value: 0x7f0700b6
-			public const int mr_art = 2131165366;
-			
-			// aapt resource value: 0x7f0700ab
-			public const int mr_chooser_list = 2131165355;
-			
-			// aapt resource value: 0x7f0700ae
-			public const int mr_chooser_route_desc = 2131165358;
-			
-			// aapt resource value: 0x7f0700ac
-			public const int mr_chooser_route_icon = 2131165356;
-			
-			// aapt resource value: 0x7f0700ad
-			public const int mr_chooser_route_name = 2131165357;
-			
-			// aapt resource value: 0x7f0700b3
-			public const int mr_close = 2131165363;
-			
-			// aapt resource value: 0x7f0700b9
-			public const int mr_control_divider = 2131165369;
-			
-			// aapt resource value: 0x7f0700bf
-			public const int mr_control_play_pause = 2131165375;
-			
-			// aapt resource value: 0x7f0700c2
-			public const int mr_control_subtitle = 2131165378;
-			
-			// aapt resource value: 0x7f0700c1
-			public const int mr_control_title = 2131165377;
-			
-			// aapt resource value: 0x7f0700c0
-			public const int mr_control_title_container = 2131165376;
-			
-			// aapt resource value: 0x7f0700b4
-			public const int mr_custom_control = 2131165364;
-			
-			// aapt resource value: 0x7f0700b5
-			public const int mr_default_control = 2131165365;
+			// aapt resource value: 0x7f0700bb
+			public const int mr_art = 2131165371;
 			
 			// aapt resource value: 0x7f0700b0
-			public const int mr_dialog_area = 2131165360;
+			public const int mr_chooser_list = 2131165360;
 			
-			// aapt resource value: 0x7f0700af
-			public const int mr_expandable_area = 2131165359;
-			
-			// aapt resource value: 0x7f0700c3
-			public const int mr_group_expand_collapse = 2131165379;
-			
-			// aapt resource value: 0x7f0700b7
-			public const int mr_media_main_control = 2131165367;
-			
-			// aapt resource value: 0x7f0700b2
-			public const int mr_name = 2131165362;
-			
-			// aapt resource value: 0x7f0700b8
-			public const int mr_playback_control = 2131165368;
+			// aapt resource value: 0x7f0700b3
+			public const int mr_chooser_route_desc = 2131165363;
 			
 			// aapt resource value: 0x7f0700b1
-			public const int mr_title_bar = 2131165361;
+			public const int mr_chooser_route_icon = 2131165361;
 			
-			// aapt resource value: 0x7f0700ba
-			public const int mr_volume_control = 2131165370;
+			// aapt resource value: 0x7f0700b2
+			public const int mr_chooser_route_name = 2131165362;
 			
-			// aapt resource value: 0x7f0700bb
-			public const int mr_volume_group_list = 2131165371;
-			
-			// aapt resource value: 0x7f0700bd
-			public const int mr_volume_item_icon = 2131165373;
+			// aapt resource value: 0x7f0700b8
+			public const int mr_close = 2131165368;
 			
 			// aapt resource value: 0x7f0700be
-			public const int mr_volume_slider = 2131165374;
+			public const int mr_control_divider = 2131165374;
+			
+			// aapt resource value: 0x7f0700c4
+			public const int mr_control_play_pause = 2131165380;
+			
+			// aapt resource value: 0x7f0700c7
+			public const int mr_control_subtitle = 2131165383;
+			
+			// aapt resource value: 0x7f0700c6
+			public const int mr_control_title = 2131165382;
+			
+			// aapt resource value: 0x7f0700c5
+			public const int mr_control_title_container = 2131165381;
+			
+			// aapt resource value: 0x7f0700b9
+			public const int mr_custom_control = 2131165369;
+			
+			// aapt resource value: 0x7f0700ba
+			public const int mr_default_control = 2131165370;
+			
+			// aapt resource value: 0x7f0700b5
+			public const int mr_dialog_area = 2131165365;
+			
+			// aapt resource value: 0x7f0700b4
+			public const int mr_expandable_area = 2131165364;
+			
+			// aapt resource value: 0x7f0700c8
+			public const int mr_group_expand_collapse = 2131165384;
+			
+			// aapt resource value: 0x7f0700bc
+			public const int mr_media_main_control = 2131165372;
+			
+			// aapt resource value: 0x7f0700b7
+			public const int mr_name = 2131165367;
+			
+			// aapt resource value: 0x7f0700bd
+			public const int mr_playback_control = 2131165373;
+			
+			// aapt resource value: 0x7f0700b6
+			public const int mr_title_bar = 2131165366;
+			
+			// aapt resource value: 0x7f0700bf
+			public const int mr_volume_control = 2131165375;
+			
+			// aapt resource value: 0x7f0700c0
+			public const int mr_volume_group_list = 2131165376;
+			
+			// aapt resource value: 0x7f0700c2
+			public const int mr_volume_item_icon = 2131165378;
+			
+			// aapt resource value: 0x7f0700c3
+			public const int mr_volume_slider = 2131165379;
 			
 			// aapt resource value: 0x7f070016
 			public const int multiply = 2131165206;
 			
-			// aapt resource value: 0x7f070072
-			public const int myExpandableListview = 2131165298;
+			// aapt resource value: 0x7f070074
+			public const int myExpandableListview = 2131165300;
 			
-			// aapt resource value: 0x7f070100
-			public const int nav_home = 2131165440;
+			// aapt resource value: 0x7f070105
+			public const int nav_home = 2131165445;
 			
-			// aapt resource value: 0x7f070101
-			public const int nav_projects = 2131165441;
+			// aapt resource value: 0x7f070106
+			public const int nav_projects = 2131165446;
 			
-			// aapt resource value: 0x7f070103
-			public const int nav_settings = 2131165443;
+			// aapt resource value: 0x7f070108
+			public const int nav_settings = 2131165448;
 			
-			// aapt resource value: 0x7f070102
-			public const int nav_timelogs = 2131165442;
+			// aapt resource value: 0x7f070107
+			public const int nav_timelogs = 2131165447;
 			
-			// aapt resource value: 0x7f0700aa
-			public const int nav_view = 2131165354;
+			// aapt resource value: 0x7f0700af
+			public const int nav_view = 2131165359;
 			
-			// aapt resource value: 0x7f07006d
-			public const int navigation_header_container = 2131165293;
+			// aapt resource value: 0x7f07006f
+			public const int navigation_header_container = 2131165295;
+			
+			// aapt resource value: 0x7f070069
+			public const int negativeButton = 2131165289;
 			
 			// aapt resource value: 0x7f070021
 			public const int never = 2131165217;
@@ -3105,23 +3117,26 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070029
 			public const int pin = 2131165225;
 			
+			// aapt resource value: 0x7f07006a
+			public const int positiveButton = 2131165290;
+			
 			// aapt resource value: 0x7f070006
 			public const int progress_circular = 2131165190;
 			
 			// aapt resource value: 0x7f070007
 			public const int progress_horizontal = 2131165191;
 			
-			// aapt resource value: 0x7f0700d6
-			public const int projectName = 2131165398;
+			// aapt resource value: 0x7f0700db
+			public const int projectName = 2131165403;
 			
-			// aapt resource value: 0x7f07009f
-			public const int projectsListView = 2131165343;
+			// aapt resource value: 0x7f0700a3
+			public const int projectsListView = 2131165347;
 			
 			// aapt resource value: 0x7f070054
 			public const int radio = 2131165268;
 			
-			// aapt resource value: 0x7f070096
-			public const int refresher = 2131165334;
+			// aapt resource value: 0x7f07009a
+			public const int refresher = 2131165338;
 			
 			// aapt resource value: 0x7f070030
 			public const int right = 2131165232;
@@ -3189,11 +3204,11 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070013
 			public const int showTitle = 2131165203;
 			
-			// aapt resource value: 0x7f07006c
-			public const int snackbar_action = 2131165292;
+			// aapt resource value: 0x7f07006e
+			public const int snackbar_action = 2131165294;
 			
-			// aapt resource value: 0x7f07006b
-			public const int snackbar_text = 2131165291;
+			// aapt resource value: 0x7f07006d
+			public const int snackbar_text = 2131165293;
 			
 			// aapt resource value: 0x7f070027
 			public const int snap = 2131165223;
@@ -3216,8 +3231,8 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070031
 			public const int start = 2131165233;
 			
-			// aapt resource value: 0x7f0700c6
-			public const int status_bar_latest_event_content = 2131165382;
+			// aapt resource value: 0x7f0700cb
+			public const int status_bar_latest_event_content = 2131165387;
 			
 			// aapt resource value: 0x7f070065
 			public const int submit_area = 2131165285;
@@ -3225,23 +3240,23 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f07000d
 			public const int tabMode = 2131165197;
 			
-			// aapt resource value: 0x7f0700a0
-			public const int tasksList_ProjectName = 2131165344;
+			// aapt resource value: 0x7f0700a4
+			public const int tasksList_ProjectName = 2131165348;
 			
-			// aapt resource value: 0x7f0700ce
-			public const int text = 2131165390;
+			// aapt resource value: 0x7f0700d3
+			public const int text = 2131165395;
 			
-			// aapt resource value: 0x7f0700cc
-			public const int text2 = 2131165388;
+			// aapt resource value: 0x7f0700d1
+			public const int text2 = 2131165393;
 			
 			// aapt resource value: 0x7f07004d
 			public const int textSpacerNoButtons = 2131165261;
 			
-			// aapt resource value: 0x7f070084
-			public const int text_headline = 2131165316;
+			// aapt resource value: 0x7f070088
+			public const int text_headline = 2131165320;
 			
-			// aapt resource value: 0x7f0700ca
-			public const int time = 2131165386;
+			// aapt resource value: 0x7f0700cf
+			public const int time = 2131165391;
 			
 			// aapt resource value: 0x7f070043
 			public const int title = 2131165251;
@@ -3249,8 +3264,8 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070048
 			public const int title_template = 2131165256;
 			
-			// aapt resource value: 0x7f0700a8
-			public const int toolbar = 2131165352;
+			// aapt resource value: 0x7f0700ad
+			public const int toolbar = 2131165357;
 			
 			// aapt resource value: 0x7f070032
 			public const int top = 2131165234;
@@ -3258,11 +3273,11 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070047
 			public const int topPanel = 2131165255;
 			
-			// aapt resource value: 0x7f070069
-			public const int touch_outside = 2131165289;
+			// aapt resource value: 0x7f07006b
+			public const int touch_outside = 2131165291;
 			
-			// aapt resource value: 0x7f07009b
-			public const int txtLarge = 2131165339;
+			// aapt resource value: 0x7f07009f
+			public const int txtLarge = 2131165343;
 			
 			// aapt resource value: 0x7f070009
 			public const int up = 2131165193;
@@ -3270,17 +3285,17 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070014
 			public const int useLogo = 2131165204;
 			
-			// aapt resource value: 0x7f070087
-			public const int view_header = 2131165319;
+			// aapt resource value: 0x7f07008b
+			public const int view_header = 2131165323;
 			
 			// aapt resource value: 0x7f07000a
 			public const int view_offset_helper = 2131165194;
 			
-			// aapt resource value: 0x7f0700bc
-			public const int volume_item_container = 2131165372;
+			// aapt resource value: 0x7f0700c1
+			public const int volume_item_container = 2131165377;
 			
-			// aapt resource value: 0x7f07008b
-			public const int web_update_details = 2131165323;
+			// aapt resource value: 0x7f07008f
+			public const int web_update_details = 2131165327;
 			
 			// aapt resource value: 0x7f070022
 			public const int withText = 2131165218;
@@ -3288,20 +3303,20 @@ namespace ProcessDashboard.Droid
 			// aapt resource value: 0x7f070015
 			public const int wrap_content = 2131165205;
 			
-			// aapt resource value: 0x7f07007b
-			public const int wrapper_attachments = 2131165307;
+			// aapt resource value: 0x7f07007f
+			public const int wrapper_attachments = 2131165311;
 			
-			// aapt resource value: 0x7f070076
-			public const int wrapper_feedback = 2131165302;
+			// aapt resource value: 0x7f07007a
+			public const int wrapper_feedback = 2131165306;
 			
-			// aapt resource value: 0x7f070075
-			public const int wrapper_feedback_scroll = 2131165301;
+			// aapt resource value: 0x7f070079
+			public const int wrapper_feedback_scroll = 2131165305;
 			
-			// aapt resource value: 0x7f07007e
-			public const int wrapper_messages = 2131165310;
+			// aapt resource value: 0x7f070082
+			public const int wrapper_messages = 2131165314;
 			
-			// aapt resource value: 0x7f070080
-			public const int wrapper_messages_buttons = 2131165312;
+			// aapt resource value: 0x7f070084
+			public const int wrapper_messages_buttons = 2131165316;
 			
 			static Id()
 			{
@@ -3502,136 +3517,139 @@ namespace ProcessDashboard.Droid
 			public const int Header = 2130903080;
 			
 			// aapt resource value: 0x7f030029
-			public const int hockeyapp_activity_expiry_info = 2130903081;
+			public const int HelpActivityLayout = 2130903081;
 			
 			// aapt resource value: 0x7f03002a
-			public const int hockeyapp_activity_feedback = 2130903082;
+			public const int hockeyapp_activity_expiry_info = 2130903082;
 			
 			// aapt resource value: 0x7f03002b
-			public const int hockeyapp_activity_login = 2130903083;
+			public const int hockeyapp_activity_feedback = 2130903083;
 			
 			// aapt resource value: 0x7f03002c
-			public const int hockeyapp_activity_update = 2130903084;
+			public const int hockeyapp_activity_login = 2130903084;
 			
 			// aapt resource value: 0x7f03002d
-			public const int hockeyapp_fragment_update = 2130903085;
+			public const int hockeyapp_activity_update = 2130903085;
 			
 			// aapt resource value: 0x7f03002e
-			public const int hockeyapp_view_feedback_message = 2130903086;
+			public const int hockeyapp_fragment_update = 2130903086;
 			
 			// aapt resource value: 0x7f03002f
-			public const int Home = 2130903087;
+			public const int hockeyapp_view_feedback_message = 2130903087;
 			
 			// aapt resource value: 0x7f030030
-			public const int ListControl_ChildItem = 2130903088;
+			public const int Home = 2130903088;
 			
 			// aapt resource value: 0x7f030031
-			public const int ListControl_Group = 2130903089;
+			public const int ListControl_ChildItem = 2130903089;
 			
 			// aapt resource value: 0x7f030032
-			public const int listGroup = 2130903090;
+			public const int ListControl_Group = 2130903090;
 			
 			// aapt resource value: 0x7f030033
-			public const int listItem = 2130903091;
+			public const int listGroup = 2130903091;
 			
 			// aapt resource value: 0x7f030034
-			public const int ListOfProjects = 2130903092;
+			public const int listItem = 2130903092;
 			
 			// aapt resource value: 0x7f030035
-			public const int ListProjectTasks = 2130903093;
+			public const int ListOfProjects = 2130903093;
 			
 			// aapt resource value: 0x7f030036
-			public const int Login = 2130903094;
+			public const int ListProjectTasks = 2130903094;
 			
 			// aapt resource value: 0x7f030037
-			public const int Main = 2130903095;
+			public const int Login = 2130903095;
 			
 			// aapt resource value: 0x7f030038
-			public const int mr_chooser_dialog = 2130903096;
+			public const int Main = 2130903096;
 			
 			// aapt resource value: 0x7f030039
-			public const int mr_chooser_list_item = 2130903097;
+			public const int mr_chooser_dialog = 2130903097;
 			
 			// aapt resource value: 0x7f03003a
-			public const int mr_controller_material_dialog_b = 2130903098;
+			public const int mr_chooser_list_item = 2130903098;
 			
 			// aapt resource value: 0x7f03003b
-			public const int mr_controller_volume_item = 2130903099;
+			public const int mr_controller_material_dialog_b = 2130903099;
 			
 			// aapt resource value: 0x7f03003c
-			public const int mr_playback_control = 2130903100;
+			public const int mr_controller_volume_item = 2130903100;
 			
 			// aapt resource value: 0x7f03003d
-			public const int mr_volume_control = 2130903101;
+			public const int mr_playback_control = 2130903101;
 			
 			// aapt resource value: 0x7f03003e
-			public const int notification_media_action = 2130903102;
+			public const int mr_volume_control = 2130903102;
 			
 			// aapt resource value: 0x7f03003f
-			public const int notification_media_cancel_action = 2130903103;
+			public const int notification_media_action = 2130903103;
 			
 			// aapt resource value: 0x7f030040
-			public const int notification_template_big_media = 2130903104;
+			public const int notification_media_cancel_action = 2130903104;
 			
 			// aapt resource value: 0x7f030041
-			public const int notification_template_big_media_narrow = 2130903105;
+			public const int notification_template_big_media = 2130903105;
 			
 			// aapt resource value: 0x7f030042
-			public const int notification_template_lines = 2130903106;
+			public const int notification_template_big_media_narrow = 2130903106;
 			
 			// aapt resource value: 0x7f030043
-			public const int notification_template_media = 2130903107;
+			public const int notification_template_lines = 2130903107;
 			
 			// aapt resource value: 0x7f030044
-			public const int notification_template_part_chronometer = 2130903108;
+			public const int notification_template_media = 2130903108;
 			
 			// aapt resource value: 0x7f030045
-			public const int notification_template_part_time = 2130903109;
+			public const int notification_template_part_chronometer = 2130903109;
 			
 			// aapt resource value: 0x7f030046
-			public const int options = 2130903110;
+			public const int notification_template_part_time = 2130903110;
 			
 			// aapt resource value: 0x7f030047
-			public const int PlannedTimeEditor = 2130903111;
+			public const int options = 2130903111;
 			
 			// aapt resource value: 0x7f030048
-			public const int projectlistitem = 2130903112;
+			public const int PlannedTimeEditor = 2130903112;
 			
 			// aapt resource value: 0x7f030049
-			public const int results = 2130903113;
+			public const int projectlistitem = 2130903113;
 			
 			// aapt resource value: 0x7f03004a
-			public const int select_dialog_item_material = 2130903114;
+			public const int results = 2130903114;
 			
 			// aapt resource value: 0x7f03004b
-			public const int select_dialog_multichoice_material = 2130903115;
+			public const int select_dialog_item_material = 2130903115;
 			
 			// aapt resource value: 0x7f03004c
-			public const int select_dialog_singlechoice_material = 2130903116;
+			public const int select_dialog_multichoice_material = 2130903116;
 			
 			// aapt resource value: 0x7f03004d
-			public const int Settings = 2130903117;
+			public const int select_dialog_singlechoice_material = 2130903117;
 			
 			// aapt resource value: 0x7f03004e
-			public const int support_simple_spinner_dropdown_item = 2130903118;
+			public const int Settings = 2130903118;
 			
 			// aapt resource value: 0x7f03004f
-			public const int TaskDetail = 2130903119;
+			public const int support_simple_spinner_dropdown_item = 2130903119;
 			
 			// aapt resource value: 0x7f030050
-			public const int TaskTimeLogList = 2130903120;
+			public const int TaskDetail = 2130903120;
 			
 			// aapt resource value: 0x7f030051
-			public const int test_result = 2130903121;
+			public const int TaskTimeLogList = 2130903121;
 			
 			// aapt resource value: 0x7f030052
-			public const int test_suite = 2130903122;
+			public const int test_result = 2130903122;
 			
 			// aapt resource value: 0x7f030053
-			public const int TimeLogEntry = 2130903123;
+			public const int test_suite = 2130903123;
 			
 			// aapt resource value: 0x7f030054
-			public const int TimeLogEntryListItem = 2130903124;
+			public const int TimeLogEntry = 2130903124;
+			
+			// aapt resource value: 0x7f030055
+			public const int TimeLogEntryListItem = 2130903125;
 			
 			static Layout()
 			{

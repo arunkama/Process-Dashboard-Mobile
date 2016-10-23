@@ -61,6 +61,8 @@ namespace ProcessDashboard.Droid
             if (e.NewState.Equals(TimeLoggingControllerStates.TimeLogCanceled))
 
             {
+
+                System.Diagnostics.Debug.WriteLine("1");
                 intent.PutExtra("key", "Time logging has been cancelled by the server");
 
                 // Communicate with the activity to update the UI
@@ -68,19 +70,28 @@ namespace ProcessDashboard.Droid
             }
             if (e.NewState.Equals(TimeLoggingControllerStates.TimeLogUpdated))
             {
+                System.Diagnostics.Debug.WriteLine("2");
                 intent.PutExtra("key", "Time logging has been updated by the server");
             }
 
             if (e.NewState.Equals(TimeLoggingControllerStates.TimeLogCreated))
             {
+                System.Diagnostics.Debug.WriteLine("3");
                 intent.PutExtra("key", "Time logging has been created by the server");
             }
 
 
             if (e.NewState.Equals(TimeLoggingControllerStates.TimeLogUpdateFailed))
             {
+                System.Diagnostics.Debug.WriteLine("4");
                 intent.PutExtra("key", "Time logging Update has failed");
             }
+            if (e.NewState.Equals(TimeLoggingControllerStates.TimeLogStopped))
+            {
+                System.Diagnostics.Debug.WriteLine("5");
+                intent.PutExtra("key", "Time logging has been stopped");
+            }
+
             LocalBroadcastManager.GetInstance(this).SendBroadcast(intent);
 
         }
