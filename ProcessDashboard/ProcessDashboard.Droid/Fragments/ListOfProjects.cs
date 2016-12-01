@@ -45,6 +45,7 @@ namespace ProcessDashboard.Droid.Fragments
                     ViewGroup.LayoutParams.MatchParent,
                     ViewGroup.LayoutParams.MatchParent));
             _si = new Scrollinput(srl);
+
             srl.Refresh += async delegate
             {
 
@@ -62,7 +63,8 @@ namespace ProcessDashboard.Droid.Fragments
         {
             base.OnViewCreated(view, savedInstanceState);
             var listView = ListView;
-            listView.SetOnScrollListener(_si);
+
+            //listView.SetOnScrollListener(_si);
             
             listView.ItemClick += (sender, e) =>
             {

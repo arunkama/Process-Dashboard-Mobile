@@ -181,7 +181,7 @@ namespace ProcessDashboard.Droid.Fragments
             base.OnViewCreated(view, savedInstanceState);
 
             var listView = ListView;
-            listView.SetOnScrollListener(_si);
+           // listView.SetOnScrollListener(_si);
             listView.ItemClick += (sender, e) =>
             {
                 var ta = (TaskAdapter)listView.Adapter;

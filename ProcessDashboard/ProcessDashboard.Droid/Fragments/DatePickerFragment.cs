@@ -34,7 +34,29 @@ namespace ProcessDashboard.Droid.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.DateTimePickerDialogFragment,container);
+            
+            
+            View v = inflater.Inflate(Resource.Layout.DateTimePickerDialogFragment, container);
+            //v.FindView
+            DatePicker dp = (DatePicker)v.FindViewWithTag("customdatepicker");
+            Button okButton = (Button)v.FindViewById(Resource.Id.positiveButton);
+
+            okButton.Click += (sender, args) =>
+            {
+                OnDateSet(dp, dp.Year, dp.Month, dp.DayOfMonth);
+                this.Dismiss();
+            };
+
+
+            Button cancelButton = (Button)v.FindViewById(Resource.Id.negativeButton);
+            cancelButton.Click += (sender, args) =>
+            {
+                this.Dismiss();
+            };
+
+            return v;
+            
+            //return inflater.Inflate(Resource.Layout.DateTimePickerDialogFragment,container);
         }
         
         /*

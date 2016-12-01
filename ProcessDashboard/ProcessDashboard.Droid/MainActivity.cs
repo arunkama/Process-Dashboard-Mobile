@@ -221,7 +221,7 @@ namespace ProcessDashboard.Droid
                 case Resource.Id.nav_projects:
                     // React on 'Projects' selection
                     ShowFragment(_listOfProjectFragment);
-
+                   //ShowFragment(_listO)
                     break;
                 case Resource.Id.nav_timelogs:
                     // React on 'Time Logs' selection
