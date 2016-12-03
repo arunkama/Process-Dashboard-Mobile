@@ -133,48 +133,33 @@ namespace ProcessDashboard.Droid.Fragments
 
 
             }
-            catch (WebException we)
+            catch (Refit.ApiException we)
             {
-                if (we.Status == WebExceptionStatus.ProtocolError)
+                Debug.WriteLine("Web exception :" + we.StatusCode);
+                pb.Dismiss();
+                if (we.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    var response = we.Response as HttpWebResponse;
-                    if (response != null)
+                    try
                     {
-                        Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                        if (response.StatusCode == HttpStatusCode.Forbidden)
-                        {
-                            try
-                            {
-
-                                if (pb.IsShowing)
-                                    pb.Dismiss();
-                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                Debug.WriteLine("We are about to logout");
-                                AccountStorage.ClearStorage();
-                                Debug.WriteLine("Main Activity is :" + Activity == null);
-                                Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                Debug.WriteLine("Main Activity is :" + Activity == null);
-                                Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
-                                ((MainActivity)(Activity)).SetDrawerState(false);
-                                ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.WriteLine("We encountered an error :" + e.Message);
-                            }
-                        }
+                        Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                        Debug.WriteLine("We are about to logout");
+                        AccountStorage.ClearStorage();
+                        Activity.StartActivity(typeof(LoginActivity));
+                        Activity.Finish();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        // no http status code available
-                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                        Debug.WriteLine("We encountered an error :" + e.Message);
                     }
                 }
+
                 else
                 {
-                    // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                    // no http status code available
+                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                 }
+
+
             }
             catch (StatusNotOkayException se)
             {

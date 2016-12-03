@@ -70,7 +70,6 @@ namespace ProcessDashboard.Droid.Fragments
         {
             // Use this to return your custom view for this Fragment
             var v = inflater.Inflate(Resource.Layout.TaskDetail, container, false);
-            Debug.WriteLine("On create view called");
             AddData(v);
             return v;
         }
@@ -98,11 +97,10 @@ namespace ProcessDashboard.Droid.Fragments
             var timeinfo = view.FindViewById<ListView>(Resource.Id.TaskDetails_TimeInfo);
             var taskComplete = view.FindViewById<CheckBox>(Resource.Id.TaskDetails_TaskComplete);
 
-            Debug.WriteLine("Completion date :"+_completionDate.HasValue);
+            Debug.WriteLine("Completion date :" + _completionDate.HasValue);
             Debug.WriteLine("Completion date :" + _completionDate.GetValueOrDefault());
             Debug.WriteLine("State to set :" + (_completionDate.HasValue && _completionDate.Value != DateTime.MinValue));
             Debug.WriteLine("State before :" + taskComplete.Checked);
-
             taskComplete.Checked = _completionDate.HasValue && _completionDate.Value != DateTime.MinValue;
 
             //taskComplete.Checked = true;
@@ -110,7 +108,7 @@ namespace ProcessDashboard.Droid.Fragments
             Debug.WriteLine("State after :" + taskComplete.Checked);
             _play = view.FindViewById<Button>(Resource.Id.TaskDetails_Play);
             _pause = view.FindViewById<Button>(Resource.Id.TaskDetails_Pause);
-             
+
             Debug.WriteLine("We have set the checkbox values");
             if (TimeLoggingController.GetInstance().IsTimerRunning() && TimeLoggingController.GetInstance().GetTimingTaskId().Equals(_taskId))
             {
@@ -125,7 +123,7 @@ namespace ProcessDashboard.Droid.Fragments
             if (_projectName != null)
                 projectName.Text = _projectName;
 
-            Debug.WriteLine(" 0 :"+ taskComplete.Checked);
+            Debug.WriteLine(" 0 ");
             Entry[] output = new Entry[3];
 
             output[0] = new Entry();
@@ -160,24 +158,23 @@ namespace ProcessDashboard.Droid.Fragments
                 output[2].value = Util.GetInstance().GetLocalTime(_completionDate.Value).ToShortDateString();
             else
                 output[2].value = "-";
-            Debug.WriteLine("output set :" + taskComplete.Checked);
+
             var listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem,
                    output);
 
 
-            Debug.WriteLine("State pre-end :" + taskComplete.Checked);
+            Debug.WriteLine("We have reached the end ");
 
             timeinfo.Adapter = listAdapter;
-            Debug.WriteLine("State pre-end 1 :" + taskComplete.Checked);
+
             pb.Show();
             Task taskDetail = null;
             try
 
             {
                 // Get data from server
-                Debug.WriteLine("State pre-end 1.5 :" + taskComplete.Checked);
                 taskDetail = await ((MainActivity)Activity).Ctrl.GetTask(AccountStorage.DataSet, _taskId);
-                Debug.WriteLine("State pre-end 2 :" + taskComplete.Checked);
+
                 _play.Click += (sender, args) =>
                 {
                     Debug.WriteLine("Play Clicked");
@@ -192,7 +189,9 @@ namespace ProcessDashboard.Droid.Fragments
                     Activity.StartService(intent);
 
                 };
-                
+
+
+
                 _pause.Click += (sender, args) =>
                 {
                     Debug.WriteLine("Pause Clicked");
@@ -209,13 +208,13 @@ namespace ProcessDashboard.Droid.Fragments
                     ((MainActivity)Activity).ListOfProjectsCallback(projectId, projectname);
 
                 };
-                Debug.WriteLine("State pre-end 3 :" + taskComplete.Checked);
+
 
 
             }
             catch (CannotReachServerException)
             {
-                if(pb.IsShowing)
+                if (pb.IsShowing)
                     pb.Dismiss();
                 AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
                 builder.SetTitle("Unable to Connect")
@@ -233,42 +232,33 @@ namespace ProcessDashboard.Droid.Fragments
 
 
             }
-            catch (WebException we)
+            catch (Refit.ApiException we)
             {
-                if (we.Status == WebExceptionStatus.ProtocolError)
+                Debug.WriteLine("Web exception :" + we.StatusCode);
+                pb.Dismiss();
+                if (we.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    var response = we.Response as HttpWebResponse;
-                    if (response != null)
+                    try
                     {
-                        Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                        if (response.StatusCode == HttpStatusCode.Forbidden)
-                        {
-                            try
-                            {
-                                if (pb.IsShowing)
-                                    pb.Dismiss();
-                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                AccountStorage.ClearStorage();
-                                Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                ((MainActivity)(Activity)).SetDrawerState(false);
-                                ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.WriteLine("We encountered an error :" + e.Message);
-                            }
-                        }
+                        Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                        Debug.WriteLine("We are about to logout");
+                        AccountStorage.ClearStorage();
+                        Activity.StartActivity(typeof(LoginActivity));
+                        Activity.Finish();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        // no http status code available
-                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                        Debug.WriteLine("We encountered an error :" + e.Message);
                     }
                 }
+
                 else
                 {
-                    // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                    // no http status code available
+                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                 }
+
+
             }
             catch (StatusNotOkayException se)
             {
@@ -306,22 +296,620 @@ namespace ProcessDashboard.Droid.Fragments
                 alert.Show();
 
             }
-            Debug.WriteLine("State pre-end 4 :" + taskComplete.Checked);
             if (taskDetail == null)
             {
                 Debug.WriteLine("T is null");
             }
 
+            if (taskDetail != null)
+            {
+                projectName.Text = taskDetail.Project.Name;
+
+                timeinfo.ItemClick += (sender, args) =>
+                {
+
+                    if (args.Position == 0)
+                    {
+
+                        LinearLayout ll = new LinearLayout(Activity);
+                        ll.Orientation = (Orientation.Horizontal);
+
+                        NumberPicker aNumberPicker = new NumberPicker(Activity)
+                        {
+                            MaxValue = (100),
+                            MinValue = (0)
+                        };
+
+                        double temp;
+
+                        temp = taskDetail.EstimatedTime;
+
+
+                        aNumberPicker.Value = TimeSpan.FromMinutes(temp).Hours;
+
+                        NumberPicker aNumberPickerA = new NumberPicker(Activity)
+                        {
+                            MaxValue = (59),
+                            MinValue = (0),
+                            Value = TimeSpan.FromMinutes(temp).Minutes
+                        };
+
+
+                        LinearLayout.LayoutParams parameters = new LinearLayout.LayoutParams(50, 50);
+                        parameters.Gravity = GravityFlags.Center;
+
+                        LinearLayout.LayoutParams numPicerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                        numPicerParams.Weight = 1;
+
+                        LinearLayout.LayoutParams qPicerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                        qPicerParams.Weight = 1;
+
+                        ll.LayoutParameters = parameters;
+                        ll.AddView(aNumberPicker, numPicerParams);
+                        ll.AddView(aNumberPickerA, qPicerParams);
+
+                        //((TaskDetailsAdapter)(timeinfo.Adapter)).GetEntry()
+
+
+                        //var ts = DateTime.ParseExact("", "HH.mm", CultureInfo.InvariantCulture);
+
+                        AlertDialog.Builder np = new AlertDialog.Builder(Activity).SetView(ll);
+
+                        np.SetTitle("Update Planned Time");
+                        np.SetNegativeButton("Cancel", (s, a) =>
+                        {
+                            np.Dispose();
+                        });
+                        np.SetPositiveButton("Ok", (s, a) =>
+                        {
+
+                            //Update Planned Time
+                            string number = aNumberPicker.Value.ToString("D2") + ":" + aNumberPickerA.Value.ToString("D2");
+                            Debug.WriteLine(number);
+                            double val = Convert.ToDouble(TimeSpan.ParseExact(number, @"hh\:mm", CultureInfo.InvariantCulture).TotalMinutes);
+                            Debug.WriteLine("The updated val is :" + val);
+                            try
+                            {
+                                ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,
+                                    _taskId, val, null, false);
+                            }
+                            catch (CannotReachServerException)
+                            {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("Unable to Connect")
+                                    .SetMessage("Please check your network connection and try again")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                          ((MainActivity)Activity).FragmentManager.PopBackStack();
+                                      })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
+
+
+                            }
+                            catch (Refit.ApiException we)
+                            {
+                                Debug.WriteLine("Web exception :" + we.StatusCode);
+                                pb.Dismiss();
+                                if (we.StatusCode == HttpStatusCode.Unauthorized)
+                                {
+                                    try
+                                    {
+                                        Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                        Debug.WriteLine("We are about to logout");
+                                        AccountStorage.ClearStorage();
+                                        Activity.StartActivity(typeof(LoginActivity));
+                                        Activity.Finish();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Debug.WriteLine("We encountered an error :" + e.Message);
+                                    }
+                                }
+
+                                else
+                                {
+                                    // no http status code available
+                                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                }
+
+
+                            }
+                            catch (StatusNotOkayException se)
+                            {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                    .SetMessage("Error :" + se.GetMessage())
+                                    .SetNeutralButton("Okay", (sender2, args2) =>
+                                    {
+                                        builder.Dispose();
+                                    })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                // For any other weird exceptions
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                      })
+                                    .SetMessage("Error :" + e.Message)
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+                            }
+                            output[0].value = TimeSpan.FromMinutes(val).ToString(@"hh\:mm");
+
+                            listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem,
+                  output);
+                            Debug.WriteLine("We have changed content ");
+                            timeinfo.Adapter = listAdapter;
+
+                            Toast.MakeText(_mActivity, "Planned Time Updated", ToastLength.Short).Show();
+                            np.Dispose();
+
+                        });
+                        np.Show();
+                        //Planned Time
+                    }
+                    else if (args.Position == 1)
+                    {
+                        //Actual Time
+                        ((MainActivity)Activity).PassTimeLogInfo(taskDetail.Id, taskDetail.Project.Name,
+                               taskDetail.FullName);
+                    }
+                    else if (args.Position == 2)
+                    {
+                        // Completion Date
+
+
+                        DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime time)
+                        {
+                            Debug.WriteLine("The received date is :" + time.ToShortDateString());
+
+                            output[2].value = time.ToShortDateString();
+
+                            listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem,
+                  output);
+                            Debug.WriteLine("We have changed content ");
+                            timeinfo.Adapter = listAdapter;
+
+                            try
+                            {
+                                ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,
+                                    _taskId, null, Util.GetInstance().GetServerTime(time), false);
+                            }
+                            catch (CannotReachServerException)
+                            {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("Unable to Connect")
+                                    .SetMessage("Please check your network connection and try again")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                          ((MainActivity)Activity).FragmentManager.PopBackStack();
+                                      })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
+
+
+                            }
+                            catch (Refit.ApiException we)
+                            {
+                                Debug.WriteLine("Web exception :" + we.StatusCode);
+                                pb.Dismiss();
+                                if (we.StatusCode == HttpStatusCode.Unauthorized)
+                                {
+                                    try
+                                    {
+                                        Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                        Debug.WriteLine("We are about to logout");
+                                        AccountStorage.ClearStorage();
+                                        Activity.StartActivity(typeof(LoginActivity));
+                                        Activity.Finish();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Debug.WriteLine("We encountered an error :" + e.Message);
+                                    }
+                                }
+
+                                else
+                                {
+                                    // no http status code available
+                                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                }
+
+
+                            }
+                            catch (StatusNotOkayException se)
+                            {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                    .SetMessage("Error :" + se.GetMessage())
+                                    .SetNeutralButton("Okay", (sender2, args2) =>
+                                    {
+                                        builder.Dispose();
+                                    })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                // For any other weird exceptions
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                      })
+                                    .SetMessage("Error :" + e.Message)
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+                            }
+
+
+                            Toast.MakeText(_mActivity, "Completion Date Updated", ToastLength.Short).Show();
+                        }, taskDetail.CompletionDate.HasValue? Util.GetInstance().GetLocalTime(taskDetail.CompletionDate.Value):DateTime.Now);
+                        //frag.StartTime = DateTime.SpecifyKind(DateTime.Parse(""+output[2].value), DateTimeKind.Local);
+
+                        if (taskDetail.CompletionDate.HasValue)
+                            frag.StartTime = Util.GetInstance().GetLocalTime(taskDetail.CompletionDate.Value);
+                        Debug.WriteLine(frag.StartTime);
+                        frag.Show(FragmentManager, DatePickerFragment.TAG);
+
+
+                    }
+
+                };
+
+                taskName.Text = taskDetail.FullName;
+                output[0].value = TimeSpan.FromMinutes(taskDetail.EstimatedTime).ToString(@"hh\:mm");
+                output[1].value = TimeSpan.FromMinutes(taskDetail.ActualTime).ToString(@"hh\:mm");
+                output[2].value = taskDetail.CompletionDate.HasValue ? Util.GetInstance().GetLocalTime(taskDetail.CompletionDate.Value).ToShortDateString() : "-";
+                listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem,
+                     output);
+
+
+                Debug.WriteLine("We have changed content ");
+
+                timeinfo.Adapter = listAdapter;
+                if (string.IsNullOrEmpty(taskDetail.Note))
+                {
+                    notes.Text = "-";
+                    notes.Gravity = GravityFlags.Center;
+
+                }
+                else
+                    notes.Text = taskDetail.Note;
+
+                var timeLogs = view.FindViewById<Button>(Resource.Id.TaskDetails_TimeLogButton);
+                timeLogs.Click +=
+                    (sender, args) =>
+                    {
+                        ((MainActivity)Activity).PassTimeLogInfo(taskDetail.Id, taskDetail.Project.Name,
+                            taskDetail.FullName);
+                    };
+
+                
+                
+                    taskComplete.Checked = taskDetail.CompletionDate.HasValue &&
+                                           taskDetail.CompletionDate.Value != DateTime.MinValue;
+                    
+                taskComplete.CheckedChange += (sender, args) =>
+                {
+                    Debug.WriteLine("Task Complete Changed");
+                    string text;
+
+                    if (args.IsChecked)
+                    {
+                        // Mark a task as complete
+                        // Show current date and time
+                        // Mark Complete Right button
+
+
+                        DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime time)
+                        {
+
+                            Debug.WriteLine("The received date is :" + time.ToShortDateString());
+                            output[2].value = time.ToShortDateString();
+
+                            listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem, output);
+                            Debug.WriteLine("We have changed content ");
+                            timeinfo.Adapter = listAdapter;
+
+                            try
+                            {
+                                ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet, _taskId, null, Util.GetInstance().GetServerTime(time), false);
+                            }
+                            catch (CannotReachServerException)
+                            {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("Unable to Connect")
+                                    .SetMessage("Please check your network connection and try again")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                          ((MainActivity)Activity).FragmentManager.PopBackStack();
+                                      })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
+
+
+                            }
+                            catch (Refit.ApiException we)
+                            {
+                                Debug.WriteLine("Web exception :" + we.StatusCode);
+                                pb.Dismiss();
+                                if (we.StatusCode == HttpStatusCode.Unauthorized)
+                                {
+                                    try
+                                    {
+                                        Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                        Debug.WriteLine("We are about to logout");
+                                        AccountStorage.ClearStorage();
+                                        Activity.StartActivity(typeof(LoginActivity));
+                                        Activity.Finish();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Debug.WriteLine("We encountered an error :" + e.Message);
+                                    }
+                                }
+
+                                else
+                                {
+                                    // no http status code available
+                                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                }
+
+
+                            }
+                            catch (StatusNotOkayException se)
+                            {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                    .SetMessage("Error :" + se.GetMessage())
+                                    .SetNeutralButton("Okay", (sender2, args2) =>
+                                    {
+                                        builder.Dispose();
+                                    })
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                // For any other weird exceptions
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                builder.SetTitle("An Error has occured")
+                                      .SetNeutralButton("Okay", (sender2, args2) =>
+                                      {
+                                          builder.Dispose();
+                                      })
+                                    .SetMessage("Error :" + e.Message)
+                                    .SetCancelable(false);
+                                AlertDialog alert = builder.Create();
+                                alert.Show();
+
+                            }
+
+
+                            Toast.MakeText(_mActivity, "Task Marked Complete", ToastLength.Short).Show();
+                        }, taskDetail.CompletionDate.HasValue? Util.GetInstance().GetLocalTime(taskDetail.CompletionDate.Value):DateTime.Now);
+                        //frag.StartTime = DateTime.SpecifyKind(DateTime.Parse(""+output[2].value), DateTimeKind.Local);
+
+                        if (taskDetail.CompletionDate.HasValue)
+                        {
+                            frag.StartTime = Util.GetInstance().GetLocalTime(taskDetail.CompletionDate.Value);
+                            frag.positiveText = "Mark Complete";
+                        }
+                        else
+                        {
+                            frag.StartTime = DateTime.Now;
+                            frag.positiveText = "Mark Complete";
+                        }
+
+                        Debug.WriteLine(frag.StartTime);
+                        frag.Show(FragmentManager, DatePickerFragment.TAG);
+
+                        //-------------------------- ---------------------
+                        //((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet,_taskId, null, convertedTime, false);
+                        //  output[2].value = DateTime.Now.ToShortDateString();
+
+                        text = "";
+                    }
+                    else
+                    {
+
+                        // Task is already complete. Default option is to mark the task incomplete
+                        // If user begins to change the completion date, provide option to change completion date
+
+
+
+                        DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime time)
+                        {
+                            if (!time.Equals(DateTime.MinValue))
+                            {
+                                Debug.WriteLine("The received date is :" + time.ToShortDateString());
+                                output[2].value = time.ToShortDateString();
+
+                                listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem,
+                                    output);
+                                Debug.WriteLine("We have changed content ");
+                                timeinfo.Adapter = listAdapter;
+
+                                try
+                                {
+                                    ((MainActivity)(Activity)).Ctrl.UpdateATask(AccountStorage.DataSet, _taskId, null,
+                                        Util.GetInstance().GetServerTime(time), false);
+                                    var previousValue = output[2].value;
+                                    // Unmark the task 
+                                    taskDetail.CompletionDate = null;
+
+                                }
+                                catch (CannotReachServerException)
+                                {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                    builder.SetTitle("Unable to Connect")
+                                        .SetMessage("Please check your network connection and try again")
+                                        .SetNeutralButton("Okay", (sender2, args2) =>
+                                        {
+                                            builder.Dispose();
+                                            ((MainActivity)Activity).FragmentManager.PopBackStack();
+                                        })
+                                        .SetCancelable(false);
+                                    AlertDialog alert = builder.Create();
+                                    alert.Show();
+
+
+
+
+                                }
+                                catch (Refit.ApiException we)
+                                {
+                                    Debug.WriteLine("Web exception :" + we.StatusCode);
+                                    pb.Dismiss();
+                                    if (we.StatusCode == HttpStatusCode.Unauthorized)
+                                    {
+                                        try
+                                        {
+                                            Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                            Debug.WriteLine("We are about to logout");
+                                            AccountStorage.ClearStorage();
+                                            Activity.StartActivity(typeof(LoginActivity));
+                                            Activity.Finish();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Debug.WriteLine("We encountered an error :" + e.Message);
+                                        }
+                                    }
+
+                                    else
+                                    {
+                                        // no http status code available
+                                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                    }
+
+
+                                }
+                                catch (StatusNotOkayException se)
+                                {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                    builder.SetTitle("An Error has occured")
+                                        .SetMessage("Error :" + se.GetMessage())
+                                        .SetNeutralButton("Okay", (sender2, args2) =>
+                                        {
+                                            builder.Dispose();
+                                        })
+                                        .SetCancelable(false);
+                                    AlertDialog alert = builder.Create();
+                                    alert.Show();
+
+
+                                }
+                                catch (Exception e)
+                                {
+                                    // For any other weird exceptions
+
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
+                                    builder.SetTitle("An Error has occured")
+                                        .SetNeutralButton("Okay", (sender2, args2) =>
+                                        {
+                                            builder.Dispose();
+                                        })
+                                        .SetMessage("Error :" + e.Message)
+                                        .SetCancelable(false);
+                                    AlertDialog alert = builder.Create();
+                                    alert.Show();
+
+                                }
+
+
+                                Toast.MakeText(_mActivity, "Task Marked Complete", ToastLength.Short).Show();
+                            }
+                        }, taskDetail.CompletionDate.HasValue ? taskDetail.CompletionDate.Value : DateTime.Now);
+                        //frag.StartTime = DateTime.SpecifyKind(DateTime.Parse(""+output[2].value), DateTimeKind.Local);
+
+                        if (taskDetail.CompletionDate.HasValue)
+                        {
+
+                            frag.StartTime = Util.GetInstance().GetLocalTime(taskDetail.CompletionDate.Value);
+                            frag.positiveText = "Mark Complete";
+                        }
+                        else
+                        {
+                            frag.StartTime = DateTime.Now;
+                            frag.positiveText = "Mark Complete";
+                        }
+
+                        Debug.WriteLine(frag.StartTime);
+                        frag.Show(FragmentManager, DatePickerFragment.TAG);
+
+
+
+
+
+                    }
+
+                    listAdapter = new TaskDetailsAdapter(Activity, Resource.Layout.TimeLogEntryListItem, output);
+                    Debug.WriteLine("We have changed content ");
+                    timeinfo.Adapter = listAdapter;
+                    // await (((MainActivity)(Activity)).Ctrl).UpdateTimeLog(Settings.GetInstance().Dataset,)
+                };
+            }
+
+
             if (pb.IsShowing)
                 pb.Dismiss();
 
             // Dismiss Dialog
-            Debug.WriteLine("State end :" + taskComplete.Checked);
+
 
 
 
         }
 
-     
+
     }
 }

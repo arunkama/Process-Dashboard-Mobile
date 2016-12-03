@@ -47,7 +47,7 @@ namespace ProcessDashboard.Droid
             username = lf.FindViewById<TextView>(Resource.Id.login_username);
             password = lf.FindViewById<TextView>(Resource.Id.login_password);
             var help = lf.FindViewById<Button>(Resource.Id.login_help);
-
+           
 
             try
             {
@@ -60,8 +60,9 @@ namespace ProcessDashboard.Droid
             }
 
            // token.Text = "G-VZV-QUI";
+
             token.Text = "GO.YN-HK1";
-            username.Text = "test";
+            username.Text = "pwtest";
             password.Text = "test";
 
             login.Click += (sender, args) =>

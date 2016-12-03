@@ -50,10 +50,10 @@ namespace ProcessDashboard.Droid.Fragments
         private async void CreateExpendableListData(View v)
         {
             var ctrl = ((MainActivity)Activity).Ctrl;
-
+            ProgressDialog pd = new ProgressDialog(Activity);
             try
             {
-                ProgressDialog pd = new ProgressDialog(Activity);
+                
                 pd.SetMessage("Loading");
                 pd.Show();
                 _headings = new Dictionary<string, List<TimeLogEntry>>();
@@ -117,47 +117,40 @@ namespace ProcessDashboard.Droid.Fragments
                 Toast.MakeText(Activity, "Please check your internet connection and try again.", ToastLength.Long)
                     .Show();
             }
+
             catch (StatusNotOkayException)
             {
                 Toast.MakeText(Activity, "An error occured. Please try again.", ToastLength.Short).Show();
             }
-            catch (WebException we)
+            catch (Refit.ApiException we)
             {
-                if (we.Status == WebExceptionStatus.ProtocolError)
+                Debug.WriteLine("Web exception :" + we.StatusCode);
+                pd.Dismiss();
+                if (we.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    var response = we.Response as HttpWebResponse;
-                    if (response != null)
+                    try
                     {
-                        Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                        if (response.StatusCode == HttpStatusCode.Forbidden)
-                        {
-                            try
-                            {
-                                Toast.MakeText(Activity,"Username and password error.",ToastLength.Long).Show();
-                                AccountStorage.ClearStorage();
-                                Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                ((MainActivity)(Activity)).SetDrawerState(false);
-                                ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.WriteLine("We encountered an error :" + e.Message);
-                            }
-                        }
+                        Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                        Debug.WriteLine("We are about to logout");
+                        AccountStorage.ClearStorage();
+                        Activity.StartActivity(typeof(LoginActivity));
+                        Activity.Finish();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        // no http status code available
-                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                        Debug.WriteLine("We encountered an error :" + e.Message);
                     }
                 }
+
                 else
                 {
                     // no http status code available
                     Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                 }
+
+
             }
-             catch (Exception)
+            catch (Exception)
             {
                 // For any other weird exceptions
                 Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();

@@ -23,11 +23,11 @@ namespace ProcessDashboard.Droid.Fragments
 
         public DateTime StartTime { get; set; }
 
-        public static DatePickerFragment NewInstance(Action<DateTime> onDateSelected)
+        public static DatePickerFragment NewInstance(Action<DateTime> onDateSelected, DateTime startingDateTime)
         {
             DatePickerFragment frag = new DatePickerFragment();
             //frag.Theme = Android.Resource.Style.ThemeDialog;
-
+            frag.StartTime = startingDateTime;
             frag._dateSelectedHandler = onDateSelected;
             return frag;
         }
@@ -39,11 +39,23 @@ namespace ProcessDashboard.Droid.Fragments
             View v = inflater.Inflate(Resource.Layout.DateTimePickerDialogFragment, container);
             //v.FindView
             DatePicker dp = (DatePicker)v.FindViewWithTag("customdatepicker");
+            TimePicker tp = (TimePicker)v.FindViewWithTag("customtimepicker");
+
+           // dp.MaxDate = DateTime.Now.Date.Millisecond;
+            
+            Debug.WriteLine("Booboo "+StartTime);
+            dp.DateTime = StartTime;
+            //tp.
+            tp.CurrentHour = (Java.Lang.Integer)StartTime.Hour;
+            tp.CurrentMinute = (Java.Lang.Integer)StartTime.Minute;
+            //tp.Hour = StartTime.Hour;
+            //tp.Minute = StartTime.Minute;
+
             Button okButton = (Button)v.FindViewById(Resource.Id.positiveButton);
 
             okButton.Click += (sender, args) =>
             {
-                OnDateSet(dp, dp.Year, dp.Month, dp.DayOfMonth);
+                OnDateSet(dp, dp.Year, dp.Month, dp.DayOfMonth,(int)tp.CurrentHour,(int)tp.CurrentHour);
                 this.Dismiss();
             };
 
@@ -58,7 +70,7 @@ namespace ProcessDashboard.Droid.Fragments
             
             //return inflater.Inflate(Resource.Layout.DateTimePickerDialogFragment,container);
         }
-        
+
         /*
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
@@ -89,11 +101,17 @@ namespace ProcessDashboard.Droid.Fragments
             return dialog;
         }
         */
+
         public void OnDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
         {
+            
+        }
+
+        public void OnDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth,int hour,int minute)
+        {
             // Note: monthOfYear is a value between 0 and 11, not 1 and 12!
-            DateTime selectedDate = new DateTime(year, monthOfYear + 1, dayOfMonth);
-            Debug.WriteLine("Date Selected is :" + selectedDate.ToShortDateString());
+            DateTime selectedDate = new DateTime(year, monthOfYear + 1, dayOfMonth,hour,minute,0);
+            Debug.WriteLine("Date Selected is :" + selectedDate.ToString("g"));
             StartTime = selectedDate;
             //Log.Debug(TAG, selectedDate.ToLongDateString());
             _dateSelectedHandler(selectedDate);

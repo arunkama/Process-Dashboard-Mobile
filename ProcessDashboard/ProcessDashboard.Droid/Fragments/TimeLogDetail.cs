@@ -18,7 +18,7 @@ namespace ProcessDashboard.Droid.Fragments
         private string _taskId;
         private string _taskName;
         private TimeLogEntry _timeLog;
-
+        private DateTime _dateTimeValue;
         private double _oldLoggedTime;
         private double _oldInterruptTime;
 
@@ -124,48 +124,34 @@ namespace ProcessDashboard.Droid.Fragments
                 Debug.WriteLine("We are going to pop backstack");
                 ((MainActivity)Activity).FragmentManager.PopBackStack();
             }
-            catch (WebException we)
+            catch (Refit.ApiException we)
             {
-                if (we.Status == WebExceptionStatus.ProtocolError)
+                Debug.WriteLine("Web exception :" + we.StatusCode);
+                pd.Dismiss();
+                if (we.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    var response = we.Response as HttpWebResponse;
-                    if (response != null)
+                    try
                     {
-                        Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                        if (response.StatusCode == HttpStatusCode.Forbidden)
-                        {
-                            try
-                            {
-
-                                if (pd.IsShowing)
-                                    pd.Dismiss();
-                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                Debug.WriteLine("We are about to logout");
-                                AccountStorage.ClearStorage();
-                                Debug.WriteLine("Main Activity is :" + Activity == null);
-                                Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                Debug.WriteLine("Main Activity is :" + Activity == null);
-                                Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
-                                ((MainActivity)(Activity)).SetDrawerState(false);
-                                ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.WriteLine("We encountered an error :" + e.Message);
-                            }
-                        }
+                        Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                        Debug.WriteLine("We are about to logout");
+                        
+                        AccountStorage.ClearStorage();
+                        Activity.StartActivity(typeof(LoginActivity));
+                        Activity.Finish();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        // no http status code available
-                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                        Debug.WriteLine("We encountered an error :" + e.Message);
                     }
                 }
+
                 else
                 {
-                    // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                    // no http status code available
+                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                 }
+
+
             }
             catch (StatusNotOkayException)
             {
@@ -199,8 +185,8 @@ namespace ProcessDashboard.Droid.Fragments
                 {
                     var newDate = DateTime.SpecifyKind(DateTime.Parse(_startTime.Text), DateTimeKind.Local);
                     
-                    double val =Convert.ToDouble(TimeSpan.ParseExact(_deltaTime.Text, @"hh\:mm", CultureInfo.InvariantCulture).TotalMinutes);
-                    double val2 =Convert.ToDouble(TimeSpan.ParseExact(_interruptTime.Text, @"hh\:mm", CultureInfo.InvariantCulture).TotalMinutes);
+                    double val = Convert.ToDouble(TimeSpan.ParseExact(_deltaTime.Text, @"hh\:mm", CultureInfo.InvariantCulture).TotalMinutes);
+                    double val2 = Convert.ToDouble(TimeSpan.ParseExact(_interruptTime.Text, @"hh\:mm", CultureInfo.InvariantCulture).TotalMinutes);
                     pd.Show();
                     await
                         ((MainActivity)Activity).Ctrl.AddATimeLog(AccountStorage.DataSet, _comment.Text,
@@ -218,43 +204,33 @@ namespace ProcessDashboard.Droid.Fragments
                     Debug.WriteLine("We are going to pop backstack");
                     ((MainActivity)Activity).FragmentManager.PopBackStack();
                 }
-                catch (WebException we)
+                catch (Refit.ApiException we)
                 {
-                    if (we.Status == WebExceptionStatus.ProtocolError)
+                    Debug.WriteLine("Web exception :" + we.StatusCode);
+                    pd.Dismiss();
+                    if (we.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        var response = we.Response as HttpWebResponse;
-                        if (response != null)
+                        try
                         {
-                            Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                            if (response.StatusCode == HttpStatusCode.Forbidden)
-                            {
-                                try
-                                {
-
-                                    if (pd.IsShowing)
-                                        pd.Dismiss();
-                                    Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                    AccountStorage.ClearStorage();
-                                    Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                    ((MainActivity)(Activity)).SetDrawerState(false);
-                                    ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
-                                }
-                                catch (Exception e)
-                                {
-                                    Debug.WriteLine("We encountered an error :" + e.Message);
-                                }
-                            }
+                            Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                            Debug.WriteLine("We are about to logout");
+                            AccountStorage.ClearStorage();
+                            Activity.StartActivity(typeof(LoginActivity));
+                            Activity.Finish();
                         }
-                        else
+                        catch (Exception e)
                         {
-                            // no http status code available
-                            Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                            Debug.WriteLine("We encountered an error :" + e.Message);
                         }
                     }
+
                     else
                     {
-                        // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                        // no http status code available
+                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                     }
+
+
                 }
                 catch (StatusNotOkayException)
                 {
@@ -308,43 +284,33 @@ namespace ProcessDashboard.Droid.Fragments
                     Debug.WriteLine("We are going to pop backstack");
                     ((MainActivity)Activity).FragmentManager.PopBackStack();
                 }
-                catch (WebException we)
+                catch (Refit.ApiException we)
                 {
-                    if (we.Status == WebExceptionStatus.ProtocolError)
+                    Debug.WriteLine("Web exception :" + we.StatusCode);
+                    pd.Dismiss();
+                    if (we.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        var response = we.Response as HttpWebResponse;
-                        if (response != null)
+                        try
                         {
-                            Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                            if (response.StatusCode == HttpStatusCode.Forbidden)
-                            {
-                                try
-                                {
-
-                                    if (pd.IsShowing)
-                                        pd.Dismiss();
-                                    Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                    AccountStorage.ClearStorage();
-                                    Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                    ((MainActivity)(Activity)).SetDrawerState(false);
-                                    ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
-                                }
-                                catch (Exception e)
-                                {
-                                    Debug.WriteLine("We encountered an error :" + e.Message);
-                                }
-                            }
+                            Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                            Debug.WriteLine("We are about to logout");
+                            AccountStorage.ClearStorage();
+                            Activity.StartActivity(typeof(LoginActivity));
+                            Activity.Finish();
                         }
-                        else
+                        catch (Exception e)
                         {
-                            // no http status code available
-                            Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                            Debug.WriteLine("We encountered an error :" + e.Message);
                         }
                     }
+
                     else
                     {
-                        // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                        // no http status code available
+                        Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                     }
+
+
                 }
                 catch (StatusNotOkayException)
                 {
@@ -402,6 +368,7 @@ namespace ProcessDashboard.Droid.Fragments
                 _oldInterruptTime = 0;
                 _deltaTime.Text = "" + TimeSpan.FromMinutes(0).ToString(@"hh\:mm");
                 _interruptTime.Text = "" + TimeSpan.FromMinutes(0).ToString(@"hh\:mm");
+                _dateTimeValue = DateTime.Now;
                 _startTime.Text = DateTime.Now.ToString("g");
             }
 
@@ -485,46 +452,33 @@ namespace ProcessDashboard.Droid.Fragments
                         AlertDialog alert = builder.Create();
                         alert.Show();
                     }
-                    catch (WebException we)
+                    catch (Refit.ApiException we)
                     {
-                        if (we.Status == WebExceptionStatus.ProtocolError)
+                        Debug.WriteLine("Web exception :" + we.StatusCode);
+                        //pd.Dismiss();
+                        if (we.StatusCode == HttpStatusCode.Unauthorized)
                         {
-                            var response = we.Response as HttpWebResponse;
-                            if (response != null)
+                            try
                             {
-                                Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                                if (response.StatusCode == HttpStatusCode.Forbidden)
-                                {
-                                    try
-                                    {
-                                      
-                                        Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                        Debug.WriteLine("We are about to logout");
-                                        AccountStorage.ClearStorage();
-                                        Debug.WriteLine("Main Activity is :" + Activity == null);
-                                        Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                        Debug.WriteLine("Main Activity is :" + Activity == null);
-                                        Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                        Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
-                                        ((MainActivity)(Activity)).SetDrawerState(false);
-                                        ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Debug.WriteLine("We encountered an error :" + e.Message);
-                                    }
-                                }
+                                Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                Debug.WriteLine("We are about to logout");
+                                AccountStorage.ClearStorage();
+                                Activity.StartActivity(typeof(LoginActivity));
+                                Activity.Finish();
                             }
-                            else
+                            catch (Exception e)
                             {
-                                // no http status code available
-                                Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                Debug.WriteLine("We encountered an error :" + e.Message);
                             }
                         }
+
                         else
                         {
-                            // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                            // no http status code available
+                            Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                         }
+
+
                     }
                     catch (StatusNotOkayException se)
                     {
@@ -574,19 +528,19 @@ namespace ProcessDashboard.Droid.Fragments
                 DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime time)
                 {
                     //TODO: DEBUG: Check whether this is causing any issues.
-                    _startTime.Text = time.ToString(CultureInfo.InvariantCulture);
-                    Toast.MakeText(Activity, "Start Date Updated", ToastLength.Short).Show();
-                    TimePickerFragment frag2 = TimePickerFragment.NewInstance(delegate (int hour, int min)
-                    {
-                        Toast.MakeText(Activity, "Start Time Updated", ToastLength.Short).Show();
-
-                        DateTime output = new DateTime(time.Year, time.Month, time.Day, hour, min, 0);
-                        _startTime.Text = output.ToString("g");
+                   // _startTime.Text = time.ToString(CultureInfo.InvariantCulture);
+                    Toast.MakeText(Activity, "Start Date and Time Updated", ToastLength.Short).Show();
+                    Debug.WriteLine(time.ToString("g"));
+                    _startTime.Text = time.ToString("g");
 
                         try
                         {
                             if (_timeLog != null)
-                                ((MainActivity)Activity).Ctrl.UpdateTimeLog(AccountStorage.DataSet, "" + _timeLog.Id, null, output, _taskId, null, null, false);
+                            {
+                                ((MainActivity) Activity).Ctrl.UpdateTimeLog(AccountStorage.DataSet, "" + _timeLog.Id,
+                                    null, time, _taskId, null, null, false);
+                                _timeLog.StartDate = time;
+                            }
 
                         }
                         catch (CannotReachServerException)
@@ -604,46 +558,33 @@ namespace ProcessDashboard.Droid.Fragments
                             AlertDialog alert = builder.Create();
                             alert.Show();
                         }
-                        catch (WebException we)
+                        catch (Refit.ApiException we)
                         {
-                            if (we.Status == WebExceptionStatus.ProtocolError)
+                            Debug.WriteLine("Web exception :" + we.StatusCode);
+                        //    pd.Dismiss();
+                            if (we.StatusCode == HttpStatusCode.Unauthorized)
                             {
-                                var response = we.Response as HttpWebResponse;
-                                if (response != null)
+                                try
                                 {
-                                    Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                                    if (response.StatusCode == HttpStatusCode.Forbidden)
-                                    {
-                                        try
-                                        {
-
-                                            Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
-                                            Debug.WriteLine("We are about to logout");
-                                            AccountStorage.ClearStorage();
-                                            Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            Debug.WriteLine("Items in the backstack :" + Activity.FragmentManager.BackStackEntryCount);
-                                            Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                            Debug.WriteLine("Items in the backstack 2 :" + Activity.FragmentManager.BackStackEntryCount);
-                                            ((MainActivity)(Activity)).SetDrawerState(false);
-                                            ((MainActivity)(Activity)).SwitchToFragment(MainActivity.FragmentTypes.Login);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Debug.WriteLine("We encountered an error :" + e.Message);
-                                        }
-                                    }
+                                    Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                    Debug.WriteLine("We are about to logout");
+                                    AccountStorage.ClearStorage();
+                                    Activity.StartActivity(typeof(LoginActivity));
+                                    Activity.Finish();
                                 }
-                                else
+                                catch (Exception e)
                                 {
-                                    // no http status code available
-                                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                    Debug.WriteLine("We encountered an error :" + e.Message);
                                 }
                             }
+
                             else
                             {
-                                // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                // no http status code available
+                                Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                             }
+
+
                         }
                         catch (StatusNotOkayException se)
                         {
@@ -677,27 +618,28 @@ namespace ProcessDashboard.Droid.Fragments
                         }
 
 
-                    });
+                  
 
-                    frag2.chosenDate = time;
-                    if (_timeLog != null)
-                    {
-                        frag2.StartHour = _timeLog.StartDate.Hour;
-                        frag2.StartMinute = _timeLog.StartDate.Minute;
-                    }
-                    else
-                    {
-                        frag2.StartHour = time.Hour;
-                        frag2.StartMinute = time.Minute;
-                    }
+                    //frag2.chosenDate = time;
 
-                    frag2.Show(FragmentManager, TimePickerFragment.TAG);
+                    //if (_timeLog != null)
+                    //{
+                    //    frag2.StartHour = _timeLog.StartDate.Hour;
+                    //    frag2.StartMinute = _timeLog.StartDate.Minute;
+                    //}
+                    //else
+                    //{
+                    //    frag2.StartHour = time.Hour;
+                    //    frag2.StartMinute = time.Minute;
+                    //}
 
-                });
+                   // frag2.Show(FragmentManager, TimePickerFragment.TAG);
+
+                }, _timeLog != null ? _timeLog.StartDate : DateTime.Now);
                 //frag.StartTime = DateTime.SpecifyKind(DateTime.Parse(""+output[2].value), DateTimeKind.Local);
 
+                //frag.StartTime = DateTime.ParseExact(_startTime.Text, "g", null);
                 frag.StartTime = _timeLog != null ? _timeLog.StartDate : DateTime.Now;
-
                 Debug.WriteLine(frag.StartTime);
                 frag.Show(FragmentManager, DatePickerFragment.TAG);
 
@@ -773,7 +715,7 @@ namespace ProcessDashboard.Droid.Fragments
                         }
                         catch (CannotReachServerException)
                         {
-
+                            Debug.WriteLine("Cannot Reach Server");
                             AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
                             builder.SetTitle("Unable to Connect")
                                 .SetMessage("Please check your network connection and try again")
@@ -786,56 +728,37 @@ namespace ProcessDashboard.Droid.Fragments
                             AlertDialog alert = builder.Create();
                             alert.Show();
                         }
-                        catch (WebException we)
+                        catch (Refit.ApiException we)
                         {
-                            if (we.Status == WebExceptionStatus.ProtocolError)
+                            Debug.WriteLine("Web exception :" + we.StatusCode);
+                          //  pd.Dismiss();
+                            if (we.StatusCode == HttpStatusCode.Unauthorized)
                             {
-                                var response = we.Response as HttpWebResponse;
-                                if (response != null)
+                                try
                                 {
-                                    Console.WriteLine("HTTP Status Code: " + (int) response.StatusCode);
-                                    if (response.StatusCode == HttpStatusCode.Forbidden)
-                                    {
-                                        try
-                                        {
-
-                                            Toast.MakeText(Activity, "Username and password error.",
-                                                ToastLength.Long).Show();
-                                            Debug.WriteLine("We are about to logout");
-                                            AccountStorage.ClearStorage();
-                                            Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            Debug.WriteLine("Items in the backstack :" +
-                                                                               Activity.FragmentManager
-                                                                                   .BackStackEntryCount);
-                                            Debug.WriteLine("Main Activity is :" + Activity == null);
-                                            Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                            Debug.WriteLine("Items in the backstack 2 :" +
-                                                                               Activity.FragmentManager
-                                                                                   .BackStackEntryCount);
-                                            ((MainActivity) (Activity)).SetDrawerState(false);
-                                            ((MainActivity) (Activity)).SwitchToFragment(
-                                                MainActivity.FragmentTypes.Login);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Debug.WriteLine("We encountered an error :" + e.Message);
-                                        }
-                                    }
+                                    Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                    Debug.WriteLine("We are about to logout");
+                                    AccountStorage.ClearStorage();
+                                    Activity.StartActivity(typeof(LoginActivity));
+                                    Activity.Finish();
                                 }
-                                else
+                                catch (Exception e)
                                 {
-                                    // no http status code available
-                                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.",
-                                        ToastLength.Short).Show();
+                                    Debug.WriteLine("We encountered an error :" + e.Message);
                                 }
                             }
+
                             else
                             {
-                                // no http status code availableToast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
+                                // no http status code available
+                                Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                             }
+
+
                         }
                         catch (StatusNotOkayException se)
                         {
+                            Debug.WriteLine("Status not okay");
                             AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
                             builder.SetTitle("An Error has occured")
                                 .SetMessage("Error :" + se.GetMessage())
@@ -852,6 +775,7 @@ namespace ProcessDashboard.Droid.Fragments
                         catch (Exception e)
                         {
                             // For any other weird exceptions
+                            Debug.WriteLine("General Exception :"+e.GetType());
                             AlertDialog.Builder builder = new AlertDialog.Builder(Activity);
                             builder.SetTitle("An Error has occured")
                                 .SetNeutralButton("Okay", (sender2, args2) =>
@@ -865,6 +789,7 @@ namespace ProcessDashboard.Droid.Fragments
 
                         }
                     }
+                    Debug.WriteLine("No exceptions");
                     _interruptTime.Text = "" + TimeSpan.FromMinutes(val).ToString(@"hh\:mm");
                     Toast.MakeText(Activity, "Interrupt Time Updated", ToastLength.Short).Show();
                     np.Dispose();
@@ -907,7 +832,7 @@ namespace ProcessDashboard.Droid.Fragments
 
                     //Update Comments
                     string value = et.Text;
-                    if (_timeLog != null)
+                    if (_timeLog != null && value.Length>0)
                     {
                         // This is an update operation
                         try
@@ -932,45 +857,33 @@ namespace ProcessDashboard.Droid.Fragments
                             AlertDialog alert = builder.Create();
                             alert.Show();
                         }
-                        catch (WebException we)
+                        catch (Refit.ApiException we)
                         {
-                            if (we.Status == WebExceptionStatus.ProtocolError)
+                            Debug.WriteLine("Web exception :" + we.StatusCode);
+                            //pd.Dismiss();
+                            if (we.StatusCode == HttpStatusCode.Unauthorized)
                             {
-                                var response = we.Response as HttpWebResponse;
-                                if (response != null)
+                                try
                                 {
-                                    Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);
-                                    if (response.StatusCode == HttpStatusCode.Forbidden)
-                                    {
-                                        try
-                                        {
-
-                                            Toast.MakeText(Activity, "Username and password error.",
-                                                ToastLength.Long).Show();
-                                            AccountStorage.ClearStorage();
-                                            Activity.FragmentManager.PopBackStack(null, PopBackStackFlags.Inclusive);
-                                            ((MainActivity)(Activity)).SetDrawerState(false);
-                                            ((MainActivity)(Activity)).SwitchToFragment(
-                                                MainActivity.FragmentTypes.Login);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Debug.WriteLine("We encountered an error :" + e.Message);
-                                        }
-                                    }
+                                    Toast.MakeText(Activity, "Username and password error.", ToastLength.Long).Show();
+                                    Debug.WriteLine("We are about to logout");
+                                    AccountStorage.ClearStorage();
+                                    Activity.StartActivity(typeof(LoginActivity));
+                                    Activity.Finish();
                                 }
-                                else
+                                catch (Exception e)
                                 {
-                                    // no http status code available
-                                    Toast.MakeText(Activity, "Unable to load the data. Please restart the application.",
-                                        ToastLength.Short).Show();
+                                    Debug.WriteLine("We encountered an error :" + e.Message);
                                 }
                             }
+
                             else
                             {
                                 // no http status code available
                                 Toast.MakeText(Activity, "Unable to load the data. Please restart the application.", ToastLength.Short).Show();
                             }
+
+
                         }
                         catch (StatusNotOkayException se)
                         {
@@ -1002,10 +915,11 @@ namespace ProcessDashboard.Droid.Fragments
                             alert.Show();
 
                         }
+                        _comment.Text = value;
+                        Toast.MakeText(Activity, "Comment Updated", ToastLength.Short).Show();
+
                     }
 
-                    _comment.Text = value;
-                    Toast.MakeText(Activity, "Comment Updated", ToastLength.Short).Show();
                     np.Dispose();
 
                 });

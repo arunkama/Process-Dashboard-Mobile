@@ -170,6 +170,7 @@ namespace ProcessDashboard.Service_Access_Layer
 
                 if (!recenttask.Stat.Equals("ok"))
                 {
+                 
                     throw new StatusNotOkayException(recenttask.Err.Msg, recenttask.Err.Code);
                 }
                 return recenttask.RecentTasks;
@@ -194,10 +195,9 @@ namespace ProcessDashboard.Service_Access_Layer
                     .GetTimeLogs(dataset, maxResults, _util.GetServerTimeString(startDateFrom),
                         _util.GetServerTimeString(startDateTo), taskId, projectId, AuthHeader);
 
-                var timelogs = await _globalPolicy
-                    .ExecuteAsync(async () => await getTimeLogsDtoTask);
+                var timelogs = await _globalPolicy.ExecuteAsync(async () => await getTimeLogsDtoTask);
 
-                if (!timelogs.Stat.Equals("ok"))
+                if (!timelogs.Stat.Equals("ok") && timelogs.Stat.Length>0)
                 {
                     throw new StatusNotOkayException(timelogs.Err.Msg, timelogs.Err.Code);
                 }
