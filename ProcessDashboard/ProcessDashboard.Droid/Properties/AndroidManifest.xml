@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.tumasolutions.processdashboard" android:versionCode="2" android:versionName="1.0.1">
-	<uses-sdk android:minSdkVersion="15" />
+	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="25" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -8,14 +8,9 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<application android:theme="@style/MyTheme" android:icon="@drawable/Icon" android:label="Process Dashboard">
 		<activity android:name=".MainActivity" />
-    <activity android:name=".LoginActivity"/>
-    <activity
-      android:name=".HelpActivity"
-      android:parentActivityName="com.tumasolutions.processdashboard.LoginActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.tumasolutions.processdashboard.LoginActivity" />
-    </activity>
-
-  </application>
+		<activity android:name=".LoginActivity" />
+		<activity android:name=".HelpActivity" android:parentActivityName="com.tumasolutions.processdashboard.LoginActivity">
+			<meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.tumasolutions.processdashboard.LoginActivity" />
+		</activity>
+	</application>
 </manifest>
