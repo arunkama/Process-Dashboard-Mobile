@@ -13,11 +13,11 @@ namespace ProcessDashboard
         {
             // the token is designed to be easy for users to type, and to be resilient to typos
             // (such as improper capitalization, extraneous space characters, or confusion between
-            // 0 and O). Unpack that token to produce a URL to the Google URL shortening service.
-            var shortGoogleUrl = ToUrl(token);
+            // 0 and O). Unpack that token to produce a URL to a URL shortening service.
+            var shortUrl = ToUrl(token);
 
-            // contact Google and retrieve the long URL that this short URL maps to.
-            var longUrl = LookupUrl(shortGoogleUrl);
+            // contact the URL shortener and retrieve the long URL that this short URL maps to.
+            var longUrl = LookupUrl(shortUrl);
 
             // extract relevant info from the long URL.
             ResolveFromUri(longUrl, out serverUrl, out datasetId);
@@ -99,10 +99,16 @@ namespace ProcessDashboard
         private string ToUrl(string token)
         {
             token = token.Trim().ToUpper().Replace('0', 'O').Replace('@', '0').Replace(',', '.');
-            if (token.Length < 2 || token[0] != 'G')
+			var result = "";
+			if (token.Length < 2)
+				throw new ArgumentException("Missing/empty token");
+			else if (token[0] == 'G')
+				result = "http://goo.gl/";
+			else if (token[0] == 'B')
+				result = "http://bit.ly/";
+			else
                 throw new ArgumentException("Unrecognized token scheme");
 
-            var result = "http://goo.gl/";
             var numLower = 0;
             var literal = false;
             foreach (var c in token.Substring(1))
